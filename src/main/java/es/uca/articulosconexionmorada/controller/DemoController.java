@@ -2,7 +2,7 @@ package es.uca.articulosconexionmorada.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import es.uca.articulosconexionmorada.bean.Persona;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/demo")
 public class DemoController {
 
-    @RequestMapping(value = "/person", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/person", method = RequestMethod.GET)
     public Persona obtenerPerson(HttpServletRequest servletRequest) {
 
     	Persona user = new Persona();
@@ -20,5 +20,5 @@ public class DemoController {
         user.setApellidos("Parker");
 
         return user;
-    }
+    }*/
 }
