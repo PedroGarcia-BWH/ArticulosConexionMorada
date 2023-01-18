@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,19 +16,20 @@ public class ArticleRestController {
     @Autowired
     private ArticleService articleService;
     @PostMapping("/lastArticles")
-    public PayloadArticle lastArticles(@RequestBody PayloadArticle payloadArticle) {
+    public List<Article> lastArticles(@RequestBody PayloadArticle payloadArticle) {
+        List<Article> lastArticles = new ArrayList<>();
         if(payloadArticle.getNumberArticles() > 0){
             List<Article> articles = articleService.findByEliminationDateIsNull();
-            for(int i = 0; i < payloadArticle.getNumberArticles() || i > articles.size(); i++){
-                if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
-                    payloadArticle.getArticles().add(articles.get(i));
-                    i++;
+            if(articles.size() > 0){
+                for(int i = 0; i < payloadArticle.getNumberArticles() || i > articles.size(); i++){
+                    if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
+                        lastArticles.add(articles.get(i));
+                        i++;
+                    }
                 }
             }
-            payloadArticle.setStatus("OK");
-        }else {
-            payloadArticle.setStatus("ERROR");
+
         }
-        return payloadArticle;
+        return lastArticles;
     }
 }
