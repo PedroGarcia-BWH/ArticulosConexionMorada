@@ -18,17 +18,23 @@ public class ArticleRestController {
     @PostMapping("/lastArticles")
     public List<Article> lastArticles(@RequestBody PayloadArticle payloadArticle) {
         List<Article> lastArticles = new ArrayList<>();
+        int i = 0;
         if(payloadArticle.getNumberArticles() > 0){
             List<Article> articles = articleService.findByEliminationDateIsNull();
             if(articles.size() > 0){
-                for(int i = 0; i < payloadArticle.getNumberArticles() || i > articles.size(); i++){
-                    if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
+                if(payloadArticle.getPreferences().size() > 0){
+                    while(i < payloadArticle.getNumberArticles() && i <= articles.size()){
+                        if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
+                            lastArticles.add(articles.get(i));
+                            i++;
+                        }
+                    }
+                }else{
+                    for(int j = 0; j < payloadArticle.getNumberArticles() && j <= articles.size(); j++){
                         lastArticles.add(articles.get(i));
-                        i++;
                     }
                 }
             }
-
         }
         return lastArticles;
     }
