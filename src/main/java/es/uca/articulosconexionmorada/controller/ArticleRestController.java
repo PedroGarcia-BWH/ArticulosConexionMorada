@@ -18,6 +18,7 @@ public class ArticleRestController {
     @PostMapping("/lastArticles")
     public List<Article> lastArticles(@RequestBody PayloadArticle payloadArticle) {
         List<Article> lastArticles = new ArrayList<>();
+        System.out.println("payloadArticle: " + payloadArticle.getPreferences());
         int i = 0;
         if(payloadArticle.getNumberArticles() > 0){
             List<Article> articles = articleService.findByEliminationDateIsNull();
