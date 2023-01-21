@@ -24,11 +24,11 @@ public class ArticleRestController {
             List<Article> articles = articleService.findByEliminationDateIsNull();
             if(articles.size() > 0){
                 if(payloadArticle.getPreferences().size() > 0){
-                    while(i < payloadArticle.getNumberArticles() && i < articles.size()){
+                    while(lastArticles.size() < payloadArticle.getNumberArticles() && i < articles.size()){
                         if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
                             lastArticles.add(articles.get(i));
-                            i++;
                         }
+                        i++;
                     }
                 }else{
                     for(int j = 0; j < payloadArticle.getNumberArticles() && j < articles.size(); j++){
@@ -37,6 +37,7 @@ public class ArticleRestController {
                 }
             }
         }
+        System.out.println(lastArticles);
         return lastArticles;
     }
 
