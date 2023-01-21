@@ -40,9 +40,11 @@ public class ArticleRestController {
         return lastArticles;
     }
 
-    @GetMapping("/query/{query}")
-    List<Article> query(@PathVariable String query) throws IOException, URISyntaxException, InterruptedException {
-        Consulta consulta = new Consulta();
+    @GetMapping("/query/{query}/{numberArticles}")
+    List<Article> query(@PathVariable String query, @PathVariable int numberArticles) throws IOException, URISyntaxException, InterruptedException {
+        Consulta consulta = new Consulta(articleService, numberArticles);
+        System.out.println("query: " + query);
+        ///System.out.println(consulta.Consulta(query));
         return consulta.Consulta(query);
     }
 }

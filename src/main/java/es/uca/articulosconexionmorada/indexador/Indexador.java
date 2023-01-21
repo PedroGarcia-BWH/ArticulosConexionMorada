@@ -80,7 +80,8 @@ public class Indexador {
 
     public static void calcularIDF (int nDocs) {
         for (String sTerm : indiceInvertido.keySet()) {
-            double idf = nDocs / indiceInvertido.get(sTerm).docId.size();
+            double idf = (double) Math.log(nDocs / indiceInvertido.get(sTerm).docId.size()) / Math.log(2);
+
             indiceInvertido.get(sTerm).setIDF(idf);
 
             //calcular peso de cada documento
@@ -106,7 +107,7 @@ public class Indexador {
 
             for (String sDoc : longPesoDoc.keySet()) {
                 //imprmir en fichero peso.txt
-                //pw.println(sDoc + " " + longPesoDoc.get(sDoc));
+                pw.println(sDoc + " " + longPesoDoc.get(sDoc));
             }
         } catch (Exception e) {
             e.printStackTrace();

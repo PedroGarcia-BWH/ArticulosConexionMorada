@@ -2,6 +2,7 @@ package es.uca.articulosconexionmorada.consulta;
 
 import com.google.gson.Gson;
 import es.uca.articulosconexionmorada.article.Article;
+import es.uca.articulosconexionmorada.article.ArticleService;
 import es.uca.articulosconexionmorada.container.Container;
 import es.uca.articulosconexionmorada.container.ContainerDocId;
 import es.uca.articulosconexionmorada.container.JsonContainer;
@@ -26,6 +27,15 @@ public class Consulta {
 
     private List<Article> articles = new ArrayList<Article>();
 
+    private ArticleService articleService;
+
+    private int n;
+
+    public Consulta(ArticleService articleService, int n) {
+        this.articleService = articleService;
+        this.n = n;
+    }
+
     public  List<Article> Consulta(String sConsulta) throws IOException, URISyntaxException, InterruptedException {
         _preprocesamiento = new preprocesamiento();
         leerLongDocumento();
@@ -34,6 +44,16 @@ public class Consulta {
         ranking(asPreprocesado);
         //sort docId
         List<Ranking> aRanking = sort();
+        int i=0;
+        //get articles
+        for (Ranking ranking : aRanking) {
+            System.out.println(ranking.doc);
+            Optional<Article> opArticle = articleService.findById(UUID.fromString(ranking.doc));
+            if (opArticle.isPresent()) {
+                articles.add(opArticle.get());
+            }
+            if(i==n-1) break;
+        }
 
         return articles;
     }
@@ -107,8 +127,4 @@ public class Consulta {
         //System.out.println(indiceInvertido.get("formation").docId.get("000084578400037"));
     }
 
-    public static String getTitulo(String sDocId) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\condo\\Downloads\\corpus\\corpus\\" + sDocId));
-        return  br.readLine();
-    }
 }
