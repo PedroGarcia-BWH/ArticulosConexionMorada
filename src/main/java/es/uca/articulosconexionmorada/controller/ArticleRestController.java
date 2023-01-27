@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,12 +20,18 @@ public class ArticleRestController {
     @PostMapping("/lastArticles")
     public List<Article> lastArticles(@RequestBody PayloadArticle payloadArticle) {
         List<Article> lastArticles = new ArrayList<>();
-        System.out.println("payloadArticle: " + payloadArticle.getPreferences());
+        ArrayList<String> emptyPreferences = new ArrayList<>();
+
+        for(int i=0; i<3; i++) emptyPreferences.add("");
+
+        System.out.println(new Date() + "--LastArticles recibido (preferences): " + payloadArticle.getPreferences());
+
         int i = 0;
         if(payloadArticle.getNumberArticles() > 0){
             List<Article> articles = articleService.findByEliminationDateIsNull();
             if(articles.size() > 0){
-                if(payloadArticle.getPreferences().size() > 0){
+                if(!equals(payloadArticle.getPreferences(), emptyPreferences)){
+
                     while(lastArticles.size() < payloadArticle.getNumberArticles() && i < articles.size()){
                         if(payloadArticle.getPreferences().contains(articles.get(i).getCategory())){
                             lastArticles.add(articles.get(i));
@@ -32,20 +40,27 @@ public class ArticleRestController {
                     }
                 }else{
                     for(int j = 0; j < payloadArticle.getNumberArticles() && j < articles.size(); j++){
-                        lastArticles.add(articles.get(i));
+                        lastArticles.add(articles.get(j));
                     }
                 }
             }
         }
-        System.out.println(lastArticles);
         return lastArticles;
     }
 
     @GetMapping("/query/{query}/{numberArticles}")
     List<Article> query(@PathVariable String query, @PathVariable int numberArticles) throws IOException, URISyntaxException, InterruptedException {
         Consulta consulta = new Consulta(articleService, numberArticles);
-        System.out.println("query: " + query);
+        System.out.println(new Date() + "--Consulta recibida: " + query);
         ///System.out.println(consulta.Consulta(query));
         return consulta.Consulta(query);
+    }
+
+    private boolean equals(List<String> list1, List<String> list2){
+        if(list1.size() != list2.size()) return false;
+        for(int i = 0; i < list1.size(); i++){
+            if(!list1.get(i).equals(list2.get(i))) return false;
+        }
+        return true;
     }
 }

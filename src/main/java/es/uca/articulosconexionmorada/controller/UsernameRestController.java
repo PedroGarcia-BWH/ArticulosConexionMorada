@@ -12,7 +12,10 @@ public class UsernameRestController {
 
     @PostMapping("/addUsername")
     public boolean addUsername(@RequestBody String username) {
+        System.out.println("Username: " + username);
         if(usernameService.findByUsername(username).isPresent()) return false;
+        //replace ""
+        username = username.replace("\"", "");
         System.out.println("username add: " + username);
         Username user = new Username(username);
         usernameService.save(user);
@@ -23,5 +26,15 @@ public class UsernameRestController {
     public boolean getUsername(@PathVariable String username) {
         System.out.println("username: " + username);
         return usernameService.findByUsername(username).isPresent();
+    }
+
+    @DeleteMapping("/deleteUsername/{username}")
+    public boolean deleteUsername(@PathVariable String username) {
+        System.out.println("username delete: " + username);
+        if(usernameService.findByUsername(username).isPresent()) {
+            usernameService.delete(usernameService.findByUsername(username).get());
+            return true;
+        }
+        return false;
     }
 }

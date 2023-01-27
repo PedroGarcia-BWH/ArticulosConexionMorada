@@ -99,4 +99,12 @@ public class Article {
     public void setCategory(String category) {
         Category = category;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "Id=" + Id +
+                ", title='" + title + '\'' +
+                ", description='" + description ;
+    }
 }

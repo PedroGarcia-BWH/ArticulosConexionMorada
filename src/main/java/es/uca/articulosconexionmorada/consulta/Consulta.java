@@ -47,7 +47,7 @@ public class Consulta {
         int i=0;
         //get articles
         for (Ranking ranking : aRanking) {
-            System.out.println(ranking.doc);
+            //System.out.println(ranking.doc);
             Optional<Article> opArticle = articleService.findById(UUID.fromString(ranking.doc));
             if (opArticle.isPresent()) {
                 articles.add(opArticle.get());
@@ -88,9 +88,9 @@ public class Consulta {
 
             }
         }
-        System.out.println(docId);
+        //System.out.println(docId);
         for(String sDocId : docId.keySet()) {
-            System.out.println(" Peso: " + docId.get(sDocId) + " Long: " + longDocumento.get(sDocId));
+            //System.out.println(" Peso: " + docId.get(sDocId) + " Long: " + longDocumento.get(sDocId));
             //System.out.println("hola");
             docId.put(sDocId, docId.get(sDocId) / longDocumento.get(sDocId));
         }

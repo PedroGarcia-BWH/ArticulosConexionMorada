@@ -20,5 +20,9 @@ public class UsernameService {
         usernameRepository.save(username);
     }
 
+    public void delete(Username username) {
+        usernameRepository.delete(username);
+    }
+
 
 }

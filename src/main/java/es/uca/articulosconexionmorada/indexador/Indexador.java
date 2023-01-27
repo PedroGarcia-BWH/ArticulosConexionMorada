@@ -32,7 +32,7 @@ public class Indexador {
 
     public void index() throws IOException, URISyntaxException {
         preprocesamiento preprocesamiento = new preprocesamiento();
-        ArrayList<String> asTerm;
+        ArrayList<String> asTerm ;
 
         List<Article> articles = articleService.findByEliminationDateIsNull();
 
