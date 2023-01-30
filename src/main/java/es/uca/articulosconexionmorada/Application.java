@@ -37,5 +37,5 @@ public class Application implements CommandLineRunner {
 						"Para prevenir y combatir la violencia sexual en España, es necesario adoptar medidas de prevención y protección eficaces. En primer lugar, es esencial promover la igualdad entre hombres y mujeres, mediante la educación y la sensibilización sobre igualdad de género y diversidad. Además, es importante fortalecer el sistema de justicia y el ámbito laboral, mediante la formación de los profesionales y la adopción de medidas de protección y prevención. También es fundamental establecer medidas de protección y ayuda para las víctimas de violencia sexual, como refugios y servicios de atención psicológica y jurídica.", "http://192.168.0.19:80/articulosConexionMorada/vioSexual.webp"));
 	*/
 	}
-	
+
 }
