@@ -29,12 +29,6 @@ public class Hilo {
     @ManyToOne
     private Hilo hiloPadre;
 
-    @Column
-    private int  meGusta = 0;
-
-    @Column
-    private int  noMeGusta = 0;
-
     public Hilo(){}
 
     public Hilo(UserApp autor, String mensaje, Hilo hiloPadre) {
@@ -42,6 +36,14 @@ public class Hilo {
         this.mensaje = mensaje;
         this.hiloPadre = hiloPadre;
         this.dateCreation = new Date();
+    }
+
+    public Hilo(Hilo hilo) {
+        this.autor = hilo.getAutor();
+        this.mensaje = hilo.getMensaje();
+        this.hiloPadre = hilo.getHiloPadre();
+        this.dateCreation = hilo.getDateCreation();
+        this.dateElimination = hilo.getDateElimination();
     }
 
     //getters
@@ -70,13 +72,6 @@ public class Hilo {
         return hiloPadre;
     }
 
-    public int getMeGusta() {
-        return meGusta;
-    }
-
-    public int getNoMeGusta() {
-        return noMeGusta;
-    }
 
     //setters
 
@@ -98,14 +93,6 @@ public class Hilo {
 
     public void setHiloPadre(Hilo hiloPadre) {
         this.hiloPadre = hiloPadre;
-    }
-
-    public void setMeGusta(int meGusta) {
-        this.meGusta = meGusta;
-    }
-
-    public void setNoMeGusta(int noMeGusta) {
-        this.noMeGusta = noMeGusta;
     }
 
 }
