@@ -11,7 +11,7 @@ public class SeguidoresService {
     @Autowired
     private SeguidoresRepository seguidoresRepository;
 
-    public int countBySeguidor(UserApp seguidor){
+    public int countBySeguidores(UserApp seguidor){
         return seguidoresRepository.countBySeguidor(seguidor);
     }
 

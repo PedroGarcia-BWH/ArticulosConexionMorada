@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Repository
 public interface HiloRepository extends JpaRepository<Hilo, UUID> {
-    List<Hilo> findByAutorOrOrderByDateCreation(UserApp userApp);
+    List<Hilo> findByAutorAndHiloPadreIsNullOrderByDateCreation(UserApp userApp);
 
-    List<Hilo> findByOrderByDateCreation();
+    List<Hilo> findByHiloPadreIsNullOrderByDateCreation();
 
 
 }

@@ -15,7 +15,6 @@ public class Hilo {
     private UUID id;
 
     @ManyToOne
-    @Column
     private UserApp autor;
 
     @Column
@@ -26,8 +25,7 @@ public class Hilo {
 
     @Column
     private Date dateElimination;
-
-    @Column
+    
     @ManyToOne
     private Hilo hiloPadre;
 

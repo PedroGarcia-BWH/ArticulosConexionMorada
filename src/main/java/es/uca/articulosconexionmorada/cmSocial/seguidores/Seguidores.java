@@ -14,11 +14,9 @@ public class Seguidores {
     private UUID id;
 
     @ManyToOne
-    @Column
     private UserApp seguidor;
 
     @ManyToOne
-    @Column
     private UserApp seguido;
 
     public Seguidores(){}

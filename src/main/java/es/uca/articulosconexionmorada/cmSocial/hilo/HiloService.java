@@ -22,12 +22,12 @@ public class HiloService {
          hiloRepository.save(hilo);
      }
 
-     public List<Hilo> findByAutorOrOrderByDateCreation(UserApp userApp){
-         return hiloRepository.findByAutorOrOrderByDateCreation(userApp);
+     public List<Hilo> findByAutorAndHiloPadreIsNullOrderByDateCreation(UserApp userApp){
+         return hiloRepository.findByAutorAndHiloPadreIsNullOrderByDateCreation(userApp);
      }
 
-     public List<Hilo> findByOrderByDateCreation(){
-         return hiloRepository.findByOrderByDateCreation();
+     public List<Hilo> findByHiloPadreIsNullOrderByDateCreation(){
+         return hiloRepository.findByHiloPadreIsNullOrderByDateCreation();
      }
 
 
