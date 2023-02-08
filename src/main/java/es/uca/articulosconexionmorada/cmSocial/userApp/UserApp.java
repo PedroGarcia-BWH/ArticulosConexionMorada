@@ -31,4 +31,9 @@ public class UserApp {
     public void setFirebaseUUID(String firebaseUUID) {
         this.firebaseUUID = firebaseUUID;
     }
+
+    @Override
+    public String toString() {
+        return firebaseUUID;
+    }
 }

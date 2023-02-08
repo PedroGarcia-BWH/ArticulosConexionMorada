@@ -51,7 +51,8 @@ public class cmSocialController {
         List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
 
         for(Hilo hilo : hilos){
-            PayloadHilo payloadHilo = new PayloadHilo(hilo, likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseUUID(),hilo.getMensaje(), hilo.getHiloPadre().getId().toString(),
+                    likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.likeExists(hilo, userAppService.findByFirebaseUUID(uuid)), dislikeService.dislikeExists(hilo,
                     userAppService.findByFirebaseUUID(uuid)));
             payloadHilos.add(payloadHilo);
@@ -66,7 +67,8 @@ public class cmSocialController {
 
         List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
         for(Hilo hilo: hilos){
-            PayloadHilo payloadHilo = new PayloadHilo(hilo, likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseUUID(),hilo.getMensaje(), hilo.getHiloPadre().getId().toString(),
+                    likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.likeExists(hilo, userAppService.findByFirebaseUUID(uuid)), dislikeService.dislikeExists(hilo,
                     userAppService.findByFirebaseUUID(uuid)));
             payloadHilos.add(payloadHilo);
@@ -77,7 +79,9 @@ public class cmSocialController {
     }
 
     @PostMapping("/add/hilo")
-    public void addHilo(Hilo hilo){
+    public void addHilo(PayloadHilo payloadHilo){
+        System.out.println(payloadHilo.getMensaje());
+        Hilo hilo = new Hilo(userAppService.findByFirebaseUUID(payloadHilo.getAutor_uuid()), payloadHilo.getMensaje(), null);
         hiloService.save(hilo);
     }
 

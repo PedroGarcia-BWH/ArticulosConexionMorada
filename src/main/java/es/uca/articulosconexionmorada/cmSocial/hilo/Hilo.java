@@ -95,4 +95,9 @@ public class Hilo {
         this.hiloPadre = hiloPadre;
     }
 
+    @Override
+    public String toString() {
+        return id.toString();
+    }
+
 }
