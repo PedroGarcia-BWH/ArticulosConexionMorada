@@ -37,11 +37,18 @@ public class cmSocialController {
     @Autowired
     private DislikeService dislikeService;
 
-    @PostMapping("/add/UserUuid")
-    public Boolean addUserUuid(String uuid){
+    /*@PostMapping("/add/userApp")
+    public void addUserApp(@RequestBody String uuid){
+        System.out.println("addUserUuid");
         UserApp userApp = new UserApp(uuid);
         userAppService.save(userApp);
-        return true;
+    }*/
+
+    @GetMapping("/add/userApp/{uuid}")
+    public void addUserApp(@PathVariable String uuid) {
+        System.out.println("addUserUuid");
+        UserApp userApp = new UserApp(uuid);
+        userAppService.save(userApp);
     }
 
     @GetMapping("/get/lastHilos/{uuid}")
@@ -79,8 +86,8 @@ public class cmSocialController {
     }
 
     @PostMapping("/add/hilo")
-    public void addHilo(PayloadHilo payloadHilo){
-        System.out.println(payloadHilo.getMensaje());
+    public void addHilo(@RequestBody PayloadHilo payloadHilo){
+        System.out.println(payloadHilo.getAutor_uuid());
         Hilo hilo = new Hilo(userAppService.findByFirebaseUUID(payloadHilo.getAutor_uuid()), payloadHilo.getMensaje(), null);
         hiloService.save(hilo);
     }

@@ -1,6 +1,5 @@
 package es.uca.articulosconexionmorada.controller;
 
-import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
 import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
 
 import javax.persistence.Column;
@@ -9,11 +8,11 @@ import java.util.Date;
 
 public class PayloadHilo {
 
-    private String autor_uuid;
+    private String autorUuid;
 
     private String mensaje;
 
-    private String hiloPadre_uuid;
+    private String hiloPadreUuid;
 
     private Date dateCreation;
     private Integer likes;
@@ -23,10 +22,12 @@ public class PayloadHilo {
 
     private Boolean disliked;
 
-    public PayloadHilo(String autor_uuid, String mensaje, String hiloPadre_uuid, Integer likes, Integer dislikes, Boolean liked, Boolean disliked) {
-        this.autor_uuid = autor_uuid;
+    public PayloadHilo(){}
+
+    public PayloadHilo(String autorUuid, String mensaje, String hiloPadreUuid, Integer likes, Integer dislikes, Boolean liked, Boolean disliked) {
+        this.autorUuid = autorUuid;
         this.mensaje = mensaje;
-        this.hiloPadre_uuid = hiloPadre_uuid;
+        this.hiloPadreUuid = hiloPadreUuid;
         this.likes = likes;
         this.dislikes = dislikes;
         this.liked = liked;
@@ -66,11 +67,11 @@ public class PayloadHilo {
     }
 
     public String getAutor_uuid() {
-        return autor_uuid;
+        return autorUuid;
     }
 
-    public void setAutor_uuid(String autor_uuid) {
-        this.autor_uuid = autor_uuid;
+    public void setAutorUuid(String autor_uuid) {
+        this.autorUuid = autor_uuid;
     }
 
     public String getMensaje() {
@@ -81,12 +82,20 @@ public class PayloadHilo {
         this.mensaje = mensaje;
     }
 
-    public String getHiloPadre_uuid() {
-        return hiloPadre_uuid;
+    public String getHiloPadreUuid() {
+        return hiloPadreUuid;
     }
 
-    public void setHiloPadre_uuid(String hiloPadre_uuid) {
-        this.hiloPadre_uuid = hiloPadre_uuid;
+    public void setHiloPadreUuid(String hiloPadre_uuid) {
+        this.hiloPadreUuid = hiloPadre_uuid;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
 }
