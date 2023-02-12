@@ -1,7 +1,6 @@
 package es.uca.articulosconexionmorada.cmSocial.seguidores;
 
-
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +10,11 @@ public class SeguidoresService {
     @Autowired
     private SeguidoresRepository seguidoresRepository;
 
-    public int countBySeguidores(UserApp seguidor){
+    public int countBySeguidores(Username seguidor){
         return seguidoresRepository.countBySeguidor(seguidor);
     }
 
-    public int countBySeguido(UserApp seguido){
+    public int countBySeguido(Username seguido){
         return seguidoresRepository.countBySeguido(seguido);
     }
 

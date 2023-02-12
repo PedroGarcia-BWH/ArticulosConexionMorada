@@ -1,6 +1,6 @@
 package es.uca.articulosconexionmorada.cmSocial.hilo;
 
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class Hilo {
     private UUID id;
 
     @ManyToOne
-    private UserApp autor;
+    private Username autor;
 
     @Column
     private String mensaje;
@@ -31,7 +31,7 @@ public class Hilo {
 
     public Hilo(){}
 
-    public Hilo(UserApp autor, String mensaje, Hilo hiloPadre) {
+    public Hilo(Username autor, String mensaje, Hilo hiloPadre) {
         this.autor = autor;
         this.mensaje = mensaje;
         this.hiloPadre = hiloPadre;
@@ -52,7 +52,7 @@ public class Hilo {
         return id;
     }
 
-    public UserApp getAutor() {
+    public Username getAutor() {
         return autor;
     }
 
@@ -75,7 +75,7 @@ public class Hilo {
 
     //setters
 
-    public void setAutor(UserApp autor) {
+    public void setAutor(Username autor) {
         this.autor = autor;
     }
 

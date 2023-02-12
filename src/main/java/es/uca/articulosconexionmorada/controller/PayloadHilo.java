@@ -1,6 +1,5 @@
 package es.uca.articulosconexionmorada.controller;
 
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
@@ -15,8 +14,8 @@ public class PayloadHilo {
     private String hiloPadreUuid;
 
     private Date dateCreation;
-    private Integer likes;
-    private Integer dislikes;
+    private long likes;
+    private long dislikes;
 
     private Boolean liked;
 
@@ -24,17 +23,18 @@ public class PayloadHilo {
 
     public PayloadHilo(){}
 
-    public PayloadHilo(String autorUuid, String mensaje, String hiloPadreUuid, Integer likes, Integer dislikes, Boolean liked, Boolean disliked) {
+    public PayloadHilo(String autorUuid, String mensaje, String hiloPadreUuid, Date dateCreation, long likes, long dislikes, Boolean liked, Boolean disliked) {
         this.autorUuid = autorUuid;
         this.mensaje = mensaje;
         this.hiloPadreUuid = hiloPadreUuid;
+        this.dateCreation = dateCreation;
         this.likes = likes;
         this.dislikes = dislikes;
         this.liked = liked;
         this.disliked = disliked;
     }
 
-    public Integer getLikes() {
+    public long getLikes() {
         return likes;
     }
 
@@ -42,7 +42,7 @@ public class PayloadHilo {
         this.likes = likes;
     }
 
-    public Integer getDislikes() {
+    public long getDislikes() {
         return dislikes;
     }
 

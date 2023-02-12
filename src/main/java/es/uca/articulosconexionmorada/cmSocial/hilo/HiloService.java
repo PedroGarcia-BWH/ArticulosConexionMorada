@@ -1,6 +1,6 @@
 package es.uca.articulosconexionmorada.cmSocial.hilo;
 
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class HiloService {
          hiloRepository.save(hilo);
      }
 
-     public List<Hilo> findByAutorAndHiloPadreIsNullOrderByDateCreation(UserApp userApp){
+     public List<Hilo> findByAutorAndHiloPadreIsNullOrderByDateCreation(Username userApp){
          return hiloRepository.findByAutorAndHiloPadreIsNullOrderByDateCreation(userApp);
      }
 
@@ -30,5 +30,8 @@ public class HiloService {
          return hiloRepository.findByHiloPadreIsNullOrderByDateCreation();
      }
 
+     public List<Hilo> findByMensajeContainingIgnoreCase(String mensaje){
+         return hiloRepository.findByMensajeContainingIgnoreCase(mensaje);
+     }
 
 }

@@ -7,10 +7,9 @@ import es.uca.articulosconexionmorada.cmSocial.hilo.HiloService;
 import es.uca.articulosconexionmorada.cmSocial.like.Like;
 import es.uca.articulosconexionmorada.cmSocial.like.LikeRepository;
 import es.uca.articulosconexionmorada.cmSocial.like.LikeService;
-import es.uca.articulosconexionmorada.cmSocial.seguidores.SeguidoresService;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserAppRepository;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserAppService;
+import es.uca.articulosconexionmorada.cmSocial.seguidores.SeguidoresService;;
+import es.uca.articulosconexionmorada.username.Username;
+import es.uca.articulosconexionmorada.username.UsernameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class cmSocialController {
 
     @Autowired
-    private UserAppService userAppService;
+    private UsernameService usernameService;
 
     @Autowired
     private HiloService hiloService;
@@ -37,31 +36,20 @@ public class cmSocialController {
     @Autowired
     private DislikeService dislikeService;
 
-    /*@PostMapping("/add/userApp")
-    public void addUserApp(@RequestBody String uuid){
-        System.out.println("addUserUuid");
-        UserApp userApp = new UserApp(uuid);
-        userAppService.save(userApp);
-    }*/
-
-    @GetMapping("/add/userApp/{uuid}")
-    public void addUserApp(@PathVariable String uuid) {
-        System.out.println("addUserUuid");
-        UserApp userApp = new UserApp(uuid);
-        userAppService.save(userApp);
-    }
-
     @GetMapping("/get/lastHilos/{uuid}")
     public List<PayloadHilo> getlastHilos(@PathVariable String uuid){
         List<Hilo> hilos = hiloService.findByHiloPadreIsNullOrderByDateCreation();
 
         List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
-
+        String hiloPadreUuid = null;
         for(Hilo hilo : hilos){
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseUUID(),hilo.getMensaje(), hilo.getHiloPadre().getId().toString(),
+
+            if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
+
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid , hilo.getDateCreation(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
-                    likeService.likeExists(hilo, userAppService.findByFirebaseUUID(uuid)), dislikeService.dislikeExists(hilo,
-                    userAppService.findByFirebaseUUID(uuid)));
+                    likeService.likeExists(hilo, usernameService.findByFirebaseId(uuid)), dislikeService.dislikeExists(hilo,
+                    usernameService.findByFirebaseId(uuid)));
             payloadHilos.add(payloadHilo);
         }
 
@@ -70,14 +58,19 @@ public class cmSocialController {
 
     @GetMapping("/get/lastHilosSeguidos/{uuid}")
     public List<PayloadHilo> getLastHilosSeguidos(@PathVariable String uuid){
-        List<Hilo> hilos = hiloService.findByAutorAndHiloPadreIsNullOrderByDateCreation(userAppService.findByFirebaseUUID(uuid));
+        List<Hilo> hilos = hiloService.findByAutorAndHiloPadreIsNullOrderByDateCreation(usernameService.findByFirebaseId(uuid));
 
         List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
+        String hiloPadreUuid = null;
+
         for(Hilo hilo: hilos){
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseUUID(),hilo.getMensaje(), hilo.getHiloPadre().getId().toString(),
+
+            if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
+
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
-                    likeService.likeExists(hilo, userAppService.findByFirebaseUUID(uuid)), dislikeService.dislikeExists(hilo,
-                    userAppService.findByFirebaseUUID(uuid)));
+                    likeService.likeExists(hilo, usernameService.findByFirebaseId(uuid)), dislikeService.dislikeExists(hilo,
+                    usernameService.findByFirebaseId(uuid)));
             payloadHilos.add(payloadHilo);
         }
 
@@ -88,7 +81,7 @@ public class cmSocialController {
     @PostMapping("/add/hilo")
     public void addHilo(@RequestBody PayloadHilo payloadHilo){
         System.out.println(payloadHilo.getAutor_uuid());
-        Hilo hilo = new Hilo(userAppService.findByFirebaseUUID(payloadHilo.getAutor_uuid()), payloadHilo.getMensaje(), null);
+        Hilo hilo = new Hilo(usernameService.findByFirebaseId(payloadHilo.getAutor_uuid()), payloadHilo.getMensaje(), null);
         hiloService.save(hilo);
     }
 
@@ -100,31 +93,31 @@ public class cmSocialController {
 
     @GetMapping("/get/Seguidores/{uuid}")
     public int getSeguidores(@PathVariable String uuid){
-        UserApp userApp = userAppService.findByFirebaseUUID(uuid);
+        Username userApp = usernameService.findByFirebaseId(uuid);
         return seguidoresService.countBySeguidores(userApp);
     }
 
     @GetMapping("/get/Seguidos/{uuid}")
     public int getSeguidos(@PathVariable String uuid){
-        UserApp userApp = userAppService.findByFirebaseUUID(uuid);
+        Username userApp = usernameService.findByFirebaseId(uuid);
         return seguidoresService.countBySeguido(userApp);
     }
 
     @PostMapping("/add/like")
     public void addLike(Hilo hilo, String uuid){
-        Like like = new Like(hilo, userAppService.findByFirebaseUUID(uuid));
+        Like like = new Like(hilo, usernameService.findByFirebaseId(uuid));
         likeService.save(like);
     }
 
     @PostMapping("/add/dislike")
     public void addDislike(Hilo hilo, String uuid){
-        Dislike disLike = new Dislike(hilo, userAppService.findByFirebaseUUID(uuid));
+        Dislike disLike = new Dislike(hilo, usernameService.findByFirebaseId(uuid));
         dislikeService.save(disLike);
     }
 
     @DeleteMapping("/delete/like")
     public void deleteLike(Hilo hilo, String uuid){
-        Optional<Like> like = likeService.findByHiloAndUserApp(hilo, userAppService.findByFirebaseUUID(uuid));
+        Optional<Like> like = likeService.findByHiloAndUserApp(hilo, usernameService.findByFirebaseId(uuid));
         if(like.isPresent()){
             likeService.delete(like.get());
         }
@@ -132,9 +125,19 @@ public class cmSocialController {
 
     @DeleteMapping("/delete/dislike")
     public void deleteDislike(Hilo hilo, String uuid){
-        Optional<Dislike> dislike = dislikeService.findByHiloAndUserApp(hilo, userAppService.findByFirebaseUUID(uuid));
+        Optional<Dislike> dislike = dislikeService.findByHiloAndUserApp(hilo, usernameService.findByFirebaseId(uuid));
         if(dislike.isPresent()){
             dislikeService.delete(dislike.get());
         }
+    }
+
+    @GetMapping("/search/hilos/{search}")
+    public List<Hilo> searchHilos(@PathVariable String search){
+        return hiloService.findByMensajeContainingIgnoreCase(search);
+    }
+
+    @GetMapping("/search/usuarios/{search}")
+    public List<Username> searchUsuarios(@PathVariable String search){
+        return usernameService.finbByUsernameContainingIgnoreCase(search);
     }
 }

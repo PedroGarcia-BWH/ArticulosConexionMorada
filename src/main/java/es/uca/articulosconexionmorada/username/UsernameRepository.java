@@ -11,5 +11,9 @@ import java.util.UUID;
 @Repository
 public interface UsernameRepository extends JpaRepository<Username, UUID> {
     Optional<Username> findByUsername(String username);
+
+    List<Username> findByUsernameContainingIgnoreCase(String username);
+
+    Username findByFirebaseId(String firebaseId);
 }
 

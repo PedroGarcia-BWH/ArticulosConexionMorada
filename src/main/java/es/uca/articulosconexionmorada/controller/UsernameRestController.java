@@ -11,13 +11,13 @@ public class UsernameRestController {
     private UsernameService usernameService;
 
     @PostMapping("/addUsername")
-    public boolean addUsername(@RequestBody String username) {
+    public boolean addUsername(@RequestBody String username, String firebaseId) {
         System.out.println("Username: " + username);
         if(usernameService.findByUsername(username).isPresent()) return false;
         //replace ""
         username = username.replace("\"", "");
         System.out.println("username add: " + username);
-        Username user = new Username(username);
+        Username user = new Username(username, firebaseId);
         usernameService.save(user);
         return true;
     }

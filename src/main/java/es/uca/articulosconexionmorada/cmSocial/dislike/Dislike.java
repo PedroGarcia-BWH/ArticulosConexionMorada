@@ -1,7 +1,7 @@
 package es.uca.articulosconexionmorada.cmSocial.dislike;
 
 import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -17,11 +17,11 @@ public class Dislike {
     private Hilo hilo;
 
     @ManyToOne
-    private UserApp userApp;
+    private Username userApp;
 
     public Dislike(){}
 
-    public Dislike(Hilo hilo, UserApp userApp) {
+    public Dislike(Hilo hilo, Username userApp) {
         this.hilo = hilo;
         this.userApp = userApp;
     }
@@ -36,7 +36,7 @@ public class Dislike {
         return hilo;
     }
 
-    public UserApp getUserApp() {
+    public Username getUserApp() {
         return userApp;
     }
 
@@ -50,7 +50,7 @@ public class Dislike {
         this.hilo = hilo;
     }
 
-    public void setUserApp(UserApp userApp) {
+    public void setUserApp(Username userApp) {
         this.userApp = userApp;
     }
 

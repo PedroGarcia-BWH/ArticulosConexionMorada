@@ -1,7 +1,8 @@
 package es.uca.articulosconexionmorada.cmSocial.dislike;
 
 import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +22,15 @@ public class DislikeService {
         dislikeRepository.delete(dislike);
     }
 
-    public int countByHilo(Hilo hilo){
+    public long countByHilo(Hilo hilo){
         return dislikeRepository.countByHilo(hilo);
     }
 
-    public boolean dislikeExists(Hilo hilo, UserApp userApp){
+    public boolean dislikeExists(Hilo hilo, Username userApp){
         return dislikeRepository.findByHiloAndUserApp(hilo, userApp).isPresent();
     }
 
-    public Optional<Dislike> findByHiloAndUserApp(Hilo hilo, UserApp userApp){
+    public Optional<Dislike> findByHiloAndUserApp(Hilo hilo, Username userApp){
         return dislikeRepository.findByHiloAndUserApp(hilo, userApp);
     }
 }

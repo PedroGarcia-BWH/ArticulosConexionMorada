@@ -1,12 +1,13 @@
 package es.uca.articulosconexionmorada.cmSocial.like;
 
 import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table (name = "likes")
 public class Like {
     @Id
     @GeneratedValue
@@ -17,12 +18,12 @@ public class Like {
     private Hilo hilo;
 
     @ManyToOne
-    private UserApp userApp;
+    private Username userApp;
 
 
     public Like(){}
 
-    public Like(Hilo hilo, UserApp userApp) {
+    public Like(Hilo hilo, Username userApp) {
         this.hilo = hilo;
         this.userApp = userApp;
     }
@@ -37,7 +38,7 @@ public class Like {
         return hilo;
     }
 
-    public UserApp getUserApp() {
+    public Username getUserApp() {
         return userApp;
     }
 
@@ -51,7 +52,7 @@ public class Like {
         this.hilo = hilo;
     }
 
-    public void setUserApp(UserApp userApp) {
+    public void setUserApp(Username userApp) {
         this.userApp = userApp;
     }
 

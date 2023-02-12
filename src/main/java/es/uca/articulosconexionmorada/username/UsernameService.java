@@ -2,6 +2,7 @@ package es.uca.articulosconexionmorada.username;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,12 @@ public class UsernameService {
         usernameRepository.delete(username);
     }
 
+    public List<Username> finbByUsernameContainingIgnoreCase(String username) {
+        return usernameRepository.findByUsernameContainingIgnoreCase(username);
+    }
+
+    public Username findByFirebaseId(String firebaseId) {
+        return usernameRepository.findByFirebaseId(firebaseId);
+    }
 
 }

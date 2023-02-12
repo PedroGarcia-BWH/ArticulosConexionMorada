@@ -3,7 +3,7 @@ package es.uca.articulosconexionmorada.cmSocial.dislike;
 
 import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
 import es.uca.articulosconexionmorada.cmSocial.like.Like;
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +13,8 @@ import java.util.UUID;
 @Repository
 public interface DislikeRepository extends JpaRepository<Dislike, UUID> {
 
-    Integer countByHilo(Hilo hilo);
+    long countByHilo(Hilo hilo);
 
-    Optional<Dislike> findByHiloAndUserApp(Hilo hilo, UserApp userApp);
+    Optional<Dislike> findByHiloAndUserApp(Hilo hilo, Username userApp);
 
 }

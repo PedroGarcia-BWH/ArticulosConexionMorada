@@ -1,6 +1,6 @@
 package es.uca.articulosconexionmorada.cmSocial.seguidores;
 
-import es.uca.articulosconexionmorada.cmSocial.userApp.UserApp;
+import es.uca.articulosconexionmorada.username.Username;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,14 +14,14 @@ public class Seguidores {
     private UUID id;
 
     @ManyToOne
-    private UserApp seguidor;
+    private Username seguidor;
 
     @ManyToOne
-    private UserApp seguido;
+    private Username seguido;
 
     public Seguidores(){}
 
-    public Seguidores(UserApp seguidor, UserApp seguido) {
+    public Seguidores(Username seguidor, Username seguido) {
         this.seguidor = seguidor;
         this.seguido = seguido;
     }
@@ -30,18 +30,18 @@ public class Seguidores {
     public UUID getId() {
         return id;
     }
-    public UserApp getSeguidor() {
+    public Username getSeguidor() {
         return seguidor;
     }
-    public UserApp getSeguido() {
+    public Username getSeguido() {
         return seguido;
     }
 
     //setters
-    public void setSeguidor(UserApp seguidor) {
+    public void setSeguidor(Username seguidor) {
         this.seguidor = seguidor;
     }
-    public void setSeguido(UserApp seguido) {
+    public void setSeguido(Username seguido) {
         this.seguido = seguido;
     }
 }

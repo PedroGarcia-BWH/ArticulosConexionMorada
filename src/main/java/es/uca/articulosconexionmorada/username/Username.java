@@ -17,10 +17,15 @@ public class Username {
     @NotNull
     private String username;
 
+    @Column(unique=true)
+    @NotNull
+    private String firebaseId;
+
     public Username() {}
 
-    public Username(String username) {
+    public Username(String username, String firebaseId) {
         this.username = username;
+        this.firebaseId = firebaseId;
     }
 
     public UUID getId() {
@@ -36,5 +41,13 @@ public class Username {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 }
