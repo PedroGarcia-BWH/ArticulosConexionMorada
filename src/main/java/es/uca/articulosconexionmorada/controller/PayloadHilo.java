@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class PayloadHilo {
 
+    private String idHilo;
+
     private String autorUuid;
 
     private String mensaje;
@@ -23,7 +25,8 @@ public class PayloadHilo {
 
     public PayloadHilo(){}
 
-    public PayloadHilo(String autorUuid, String mensaje, String hiloPadreUuid, Date dateCreation, long likes, long dislikes, Boolean liked, Boolean disliked) {
+    public PayloadHilo(String idHilo,String autorUuid, String mensaje, String hiloPadreUuid, Date dateCreation, long likes, long dislikes, Boolean liked, Boolean disliked) {
+        this.idHilo = idHilo;
         this.autorUuid = autorUuid;
         this.mensaje = mensaje;
         this.hiloPadreUuid = hiloPadreUuid;
@@ -96,6 +99,14 @@ public class PayloadHilo {
 
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    public String getIdHilo() {
+        return idHilo;
+    }
+
+    public void setIdHilo(String idHilo) {
+        this.idHilo = idHilo;
     }
 
 }

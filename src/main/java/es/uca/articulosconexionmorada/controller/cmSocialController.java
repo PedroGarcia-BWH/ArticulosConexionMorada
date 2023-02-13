@@ -14,10 +14,7 @@ import es.uca.articulosconexionmorada.username.UsernameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class cmSocialController {
@@ -49,7 +46,7 @@ public class cmSocialController {
 
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
 
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid , hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid , hilo.getDateCreation(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.likeExists(hilo, usernameService.findByFirebaseId(uuid)), dislikeService.dislikeExists(hilo,
                     usernameService.findByFirebaseId(uuid)));
@@ -59,6 +56,7 @@ public class cmSocialController {
         return payloadHilos;
     }
 
+    //version placeholder
     @GetMapping("/get/lastHilosSeguidos/{uuid}")
     public List<PayloadHilo> getLastHilosSeguidos(@PathVariable String uuid){
         List<Hilo> hilos = hiloService.findByAutorAndHiloPadreIsNullOrderByDateCreation(usernameService.findByFirebaseId(uuid));
@@ -70,9 +68,9 @@ public class cmSocialController {
 
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
 
-            System.out.println("Hilo: " + hilo.getMensaje() + " - " + hilo.getAutor().getFirebaseId());
+            //System.out.println("Hilo: " + hilo.getMensaje() + " - " + hilo.getAutor().getFirebaseId() + " - " + hilo.getId().toString());
 
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.likeExists(hilo, usernameService.findByFirebaseId(uuid)), dislikeService.dislikeExists(hilo,
                     usernameService.findByFirebaseId(uuid)));
@@ -145,7 +143,7 @@ public class cmSocialController {
         for (Hilo hilo : hilos){
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
             else hiloPadreUuid = null;
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false);
             payloadHilos.add(payloadHilo);
         }
@@ -160,5 +158,44 @@ public class cmSocialController {
 
         }
         return payloadUsernames;
+    }
+
+    @GetMapping("/get/hilos/{uuid}")
+    public List<PayloadHilo> getHilosUser(@PathVariable String uuid){
+        List<Hilo> hilos = hiloService.findByAutorOrderByDateCreation(usernameService.findByFirebaseId(uuid));
+        List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
+        String hiloPadreUuid = null;
+
+        for (Hilo hilo : hilos){
+            if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
+            else hiloPadreUuid = null;
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+                    likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false);
+            payloadHilos.add(payloadHilo);
+        }
+        return payloadHilos;
+    }
+
+    @GetMapping("/get/respuesta/{idHilo}")
+    public List<PayloadHilo> getRespuestas(@PathVariable String idHilo){
+        Optional<Hilo> hiloSelected = hiloService.findById(UUID.fromString(idHilo));
+        if(hiloSelected.isPresent()){
+
+            if(hiloSelected.get().getHiloPadre() != null) hiloSelected = hiloService.findById(hiloSelected.get().getHiloPadre().getId());
+
+            if(hiloSelected.isPresent()){
+
+                List<Hilo> hilos = hiloService.findByHiloPadreOrderByDateCreation(hiloSelected.get());
+                List<PayloadHilo> payloadHilos = new ArrayList<PayloadHilo>();
+
+                for (Hilo hilo : hilos){
+                    PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hilo.getHiloPadre().getId().toString(), hilo.getDateCreation(),
+                            likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false);
+                    payloadHilos.add(payloadHilo);
+                }
+                return payloadHilos;
+            }
+        }
+        return null;
     }
 }
