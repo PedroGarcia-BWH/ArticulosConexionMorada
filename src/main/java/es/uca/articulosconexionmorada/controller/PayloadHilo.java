@@ -66,7 +66,7 @@ public class PayloadHilo {
         this.disliked = disliked;
     }
 
-    public String getAutor_uuid() {
+    public String getAutorUuid() {
         return autorUuid;
     }
 
