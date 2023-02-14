@@ -5,9 +5,12 @@ import es.uca.articulosconexionmorada.cmSocial.dislike.DislikeService;
 import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
 import es.uca.articulosconexionmorada.cmSocial.hilo.HiloService;
 import es.uca.articulosconexionmorada.cmSocial.like.Like;
-import es.uca.articulosconexionmorada.cmSocial.like.LikeRepository;
 import es.uca.articulosconexionmorada.cmSocial.like.LikeService;
+import es.uca.articulosconexionmorada.cmSocial.seguidores.Seguidores;
 import es.uca.articulosconexionmorada.cmSocial.seguidores.SeguidoresService;;
+import es.uca.articulosconexionmorada.controller.payload.PayloadHilo;
+import es.uca.articulosconexionmorada.controller.payload.PayloadSeguidores;
+import es.uca.articulosconexionmorada.controller.payload.PayloadUsername;
 import es.uca.articulosconexionmorada.username.Username;
 import es.uca.articulosconexionmorada.username.UsernameRepository;
 import es.uca.articulosconexionmorada.username.UsernameService;
@@ -105,6 +108,39 @@ public class cmSocialController {
         Username userApp = usernameService.findByFirebaseId(uuid);
         return seguidoresService.countBySeguido(userApp);
     }
+
+    @GetMapping("/get/SeguidorExist/{uuidSeguidor}/{uuidSeguido}")
+    public boolean getSeguidorExist(@PathVariable String uuidSeguidor, @PathVariable String uuidSeguido){
+        Username seguidor = usernameService.findByFirebaseId(uuidSeguidor);
+        Username seguido = usernameService.findByFirebaseId(uuidSeguido);
+        Optional<Seguidores> seguidores = seguidoresService.findBySeguidorAndSeguido(seguidor, seguido);
+        return seguidores.isPresent();
+    }
+
+
+    @PostMapping("/add/Seguidor")
+    public void addSeguidor(@RequestBody PayloadSeguidores payloadSeguidores){
+        System.out.println("Seguidor: ");
+        Username seguidor = usernameService.findByFirebaseId(payloadSeguidores.seguidorUuid);
+        Username seguido = usernameService.findByFirebaseId(payloadSeguidores.seguidoUuid);
+
+        Optional<Seguidores> opSeguidores = seguidoresService.findBySeguidorAndSeguido(seguidor, seguido);
+        System.out.println("Seguidor: " + seguidor.getFirebaseId() + " - Seguido: " + seguido.getFirebaseId());
+        if(!opSeguidores.isPresent()){
+            Seguidores seguidores = new Seguidores(seguidor, seguido);
+            seguidoresService.save(seguidores);
+        }
+    }
+
+    @DeleteMapping("/delete/Seguidor/{uuidSeguidor}/{uuidSeguido}")
+    public void deleteSeguidor(@PathVariable String uuidSeguidor, @PathVariable String uuidSeguido){
+        Username seguidor = usernameService.findByFirebaseId(uuidSeguidor);
+        Username seguido = usernameService.findByFirebaseId(uuidSeguido);
+        Optional<Seguidores> seguidores = seguidoresService.findBySeguidorAndSeguido(seguidor, seguido);
+
+        if(seguidores.isPresent()) seguidoresService.delete(seguidores.get());
+    }
+
 
     @PostMapping("/add/like")
     public void addLike(Hilo hilo, String uuid){

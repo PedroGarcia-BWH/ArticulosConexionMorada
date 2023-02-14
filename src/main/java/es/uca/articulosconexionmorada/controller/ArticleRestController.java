@@ -3,13 +3,13 @@ package es.uca.articulosconexionmorada.controller;
 import es.uca.articulosconexionmorada.article.Article;
 import es.uca.articulosconexionmorada.article.ArticleService;
 import es.uca.articulosconexionmorada.consulta.Consulta;
+import es.uca.articulosconexionmorada.controller.payload.PayloadArticle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,5 +18,8 @@ public interface SeguidoresRepository extends JpaRepository<Seguidores, UUID> {
     List<Seguidores> findBySeguidor(Username seguidor);
 
     List<Seguidores> findBySeguido(Username seguido);
+
+    Optional<Seguidores> findBySeguidorAndSeguido(Username seguidor, Username seguido);
+
 }
 

@@ -1,5 +1,6 @@
 package es.uca.articulosconexionmorada.controller;
 
+import es.uca.articulosconexionmorada.controller.payload.PayloadUsername;
 import es.uca.articulosconexionmorada.username.Username;
 import es.uca.articulosconexionmorada.username.UsernameService;
 import org.springframework.beans.factory.annotation.Autowired;

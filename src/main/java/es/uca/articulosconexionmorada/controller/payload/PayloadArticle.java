@@ -1,4 +1,4 @@
-package es.uca.articulosconexionmorada.controller;
+package es.uca.articulosconexionmorada.controller.payload;
 
 
 

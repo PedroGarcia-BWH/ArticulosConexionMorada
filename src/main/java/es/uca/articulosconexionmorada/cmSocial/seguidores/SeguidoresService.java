@@ -4,6 +4,8 @@ import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SeguidoresService {
 
@@ -25,5 +27,11 @@ public class SeguidoresService {
     public void delete(Seguidores seguidores){
         seguidoresRepository.delete(seguidores);
     }
+
+    public Optional<Seguidores> findBySeguidorAndSeguido(Username seguidor, Username seguido){
+        return seguidoresRepository.findBySeguidorAndSeguido(seguidor, seguido);
+    }
+
+
 
 }
