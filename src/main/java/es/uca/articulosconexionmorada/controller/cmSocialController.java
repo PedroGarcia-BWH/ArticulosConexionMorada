@@ -6,6 +6,10 @@ import es.uca.articulosconexionmorada.cmSocial.hilo.Hilo;
 import es.uca.articulosconexionmorada.cmSocial.hilo.HiloService;
 import es.uca.articulosconexionmorada.cmSocial.like.Like;
 import es.uca.articulosconexionmorada.cmSocial.like.LikeService;
+import es.uca.articulosconexionmorada.cmSocial.notificacion.hilo.NotificacionHilo;
+import es.uca.articulosconexionmorada.cmSocial.notificacion.hilo.NotificationHiloService;
+import es.uca.articulosconexionmorada.cmSocial.notificacion.persona.NotificacionPersona;
+import es.uca.articulosconexionmorada.cmSocial.notificacion.persona.NotificationPersonaService;
 import es.uca.articulosconexionmorada.cmSocial.seguidores.Seguidores;
 import es.uca.articulosconexionmorada.cmSocial.seguidores.SeguidoresService;;
 import es.uca.articulosconexionmorada.controller.payload.PayloadHilo;
@@ -39,6 +43,12 @@ public class cmSocialController {
     @Autowired
     private UsernameRepository usernameRepository;
 
+    @Autowired
+    private NotificationHiloService notificacionHiloService;
+
+    @Autowired
+    private NotificationPersonaService notificacionPersonaService;
+
     @GetMapping("/get/lastHilos/{uuid}")
     public List<PayloadHilo> getlastHilos(@PathVariable String uuid){
         List<Hilo> hilos = hiloService.findByHiloPadreIsNullOrderByDateCreation();
@@ -49,7 +59,7 @@ public class cmSocialController {
 
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
 
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid , hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid , hilo.getDateCreation().toString(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.getLike(hilo.getId().toString(), uuid), dislikeService.getDislike(hilo.getId().toString(), uuid));
             payloadHilos.add(payloadHilo);
@@ -89,7 +99,7 @@ public class cmSocialController {
 
             //System.out.println("Hilo: " + hilo.getMensaje() + " - " + hilo.getAutor().getFirebaseId() + " - " + hilo.getId().toString());
 
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(),hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation().toString(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.getLike(hilo.getId().toString(), uuid), dislikeService.getDislike(hilo.getId().toString(), uuid));
             payloadHilos.add(payloadHilo);
@@ -101,8 +111,14 @@ public class cmSocialController {
 
     @PostMapping("/add/hilo")
     public void addHilo(@RequestBody PayloadHilo payloadHilo){
-        System.out.println(payloadHilo.getAutorUuid());
-        Hilo hilo = new Hilo(usernameService.findByFirebaseId(payloadHilo.getAutorUuid()), payloadHilo.getMensaje(), null);
+        if(payloadHilo.getHiloPadreUuid() != null) {
+            Optional<Hilo> hiloPadre = hiloService.findById(UUID.fromString(payloadHilo.getHiloPadreUuid()));
+            if (hiloPadre.isPresent()) {
+                NotificacionHilo notificacionHilo = new NotificacionHilo(hiloPadre.get().getAutor(), hiloPadre.get(), "te ha respondido en un hilo", new Date(), null);
+                notificacionHiloService.save(notificacionHilo);
+            }
+        }
+        Hilo hilo = new Hilo(usernameService.findByFirebaseId(payloadHilo.getAutorUuid()), payloadHilo.getMensaje(), payloadHilo.getHiloPadreUuid() != null ? hiloService.findById(UUID.fromString(payloadHilo.getHiloPadreUuid())).get() : null);
         hiloService.save(hilo);
     }
 
@@ -144,6 +160,9 @@ public class cmSocialController {
         if(!opSeguidores.isPresent()){
             Seguidores seguidores = new Seguidores(seguidor, seguido);
             seguidoresService.save(seguidores);
+
+            NotificacionPersona notificacionPersona = new NotificacionPersona(seguidor,seguido,"te ha seguido", new Date(), null);
+            notificacionPersonaService.save(notificacionPersona);
         }
     }
 
@@ -161,14 +180,25 @@ public class cmSocialController {
     public void addLike(@RequestBody PayloadHilo payloadHilo){
         Like like = new Like(hiloService.findById(UUID.fromString(payloadHilo.getIdHilo())).get(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()));
 
-        if(!likeService.likeExists(like.getHilo(), like.getUserApp())) likeService.save(like);
+        if(!likeService.likeExists(like.getHilo(), like.getUserApp())){
+            likeService.save(like);
+
+            NotificacionHilo notificacionHilo = new NotificacionHilo(like.getHilo().getAutor(), like.getHilo(), "le gusta tu hilo", new Date(), null);
+            notificacionHiloService.save(notificacionHilo);
+        }
+
     }
 
     @PostMapping("/add/dislike")
     public void addDislike(@RequestBody PayloadHilo payloadHilo){
         Dislike disLike = new Dislike(hiloService.findById(UUID.fromString(payloadHilo.getIdHilo())).get(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()));
 
-        if(!dislikeService.dislikeExists(disLike.getHilo(), disLike.getUserApp())) dislikeService.save(disLike);
+        if(!dislikeService.dislikeExists(disLike.getHilo(), disLike.getUserApp())){
+            dislikeService.save(disLike);
+
+            NotificacionHilo notificacionHilo = new NotificacionHilo(disLike.getHilo().getAutor(), disLike.getHilo(), "no le gusta tu hilo", new Date(), null);
+            notificacionHiloService.save(notificacionHilo);
+        }
     }
 
     @DeleteMapping("/delete/like/{idHilo}/{uuid}")
@@ -206,7 +236,7 @@ public class cmSocialController {
         for (Hilo hilo : hilos){
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
             else hiloPadreUuid = null;
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation().toString(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo),
                     likeService.getLike(hilo.getId().toString(), uuid), dislikeService.getDislike(hilo.getId().toString(), uuid));
             payloadHilos.add(payloadHilo);
@@ -233,7 +263,7 @@ public class cmSocialController {
         for (Hilo hilo : hilos){
             if(hilo.getHiloPadre() != null) hiloPadreUuid = hilo.getHiloPadre().getId().toString();
             else hiloPadreUuid = null;
-            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation(),
+            PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(), hiloPadreUuid, hilo.getDateCreation().toString(),
                     likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false);
             payloadHilos.add(payloadHilo);
         }
@@ -251,7 +281,7 @@ public class cmSocialController {
 
             if(hiloSelected.get().getHiloPadre() == null) {
                 payloadHilos.add(new PayloadHilo(hiloSelected.get().getId().toString(), hiloSelected.get().getAutor().getFirebaseId(), hiloSelected.get().getMensaje(),
-                        null, hiloSelected.get().getDateCreation(),
+                        null, hiloSelected.get().getDateCreation().toString(),
                         likeService.countByHilo(hiloSelected.get()), dislikeService.countByHilo(hiloSelected.get()),
                         likeService.getLike(idHilo, uuid), dislikeService.getDislike(idHilo, uuid)));
 
@@ -261,7 +291,7 @@ public class cmSocialController {
                 Hilo hilo = hiloService.findById(hiloSelected.get().getHiloPadre().getId()).get();
 
                 payloadHilos.add(new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(),
-                        null, hilo.getDateCreation(),
+                        null, hilo.getDateCreation().toString(),
                         likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false));
 
                 hilos = hiloService.findByHiloPadreOrderByDateCreation(hilo);
@@ -270,7 +300,7 @@ public class cmSocialController {
 
             for (Hilo hilo : hilos){
                 PayloadHilo payloadHilo = new PayloadHilo(hilo.getId().toString(), hilo.getAutor().getFirebaseId(), hilo.getMensaje(),
-                        hilo.getHiloPadre().getId().toString(), hilo.getDateCreation(),
+                        hilo.getHiloPadre().getId().toString(), hilo.getDateCreation().toString(),
                         likeService.countByHilo(hilo), dislikeService.countByHilo(hilo), false, false);
                 payloadHilos.add(payloadHilo);
             }

@@ -15,7 +15,7 @@ public class PayloadHilo {
 
     private String hiloPadreUuid;
 
-    private Date dateCreation;
+    private String dateCreation;
     private long likes;
     private long dislikes;
 
@@ -25,7 +25,7 @@ public class PayloadHilo {
 
     public PayloadHilo(){}
 
-    public PayloadHilo(String idHilo,String autorUuid, String mensaje, String hiloPadreUuid, Date dateCreation, long likes, long dislikes, Boolean liked, Boolean disliked) {
+    public PayloadHilo(String idHilo,String autorUuid, String mensaje, String hiloPadreUuid, String dateCreation, long likes, long dislikes, Boolean liked, Boolean disliked) {
         this.idHilo = idHilo;
         this.autorUuid = autorUuid;
         this.mensaje = mensaje;
@@ -93,11 +93,11 @@ public class PayloadHilo {
         this.hiloPadreUuid = hiloPadre_uuid;
     }
 
-    public Date getDateCreation() {
+    public String getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
+    public void setDateCreation(String dateCreation) {
         this.dateCreation = dateCreation;
     }
 
