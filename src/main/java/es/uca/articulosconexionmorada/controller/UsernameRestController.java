@@ -18,7 +18,7 @@ public class UsernameRestController {
         //replace ""
         payloadUsername.username = payloadUsername.username.replace("\"", "");
         System.out.println("username add: " + payloadUsername.username);
-        Username user = new Username(payloadUsername.username, payloadUsername.uuid);
+        Username user = new Username(payloadUsername.username, payloadUsername.uuid, payloadUsername.token);
         usernameService.save(user);
         return true;
     }

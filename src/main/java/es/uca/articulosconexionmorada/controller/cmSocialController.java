@@ -248,7 +248,7 @@ public class cmSocialController {
     public List<PayloadUsername> searchUsuarios(@PathVariable String search){
         List<PayloadUsername> payloadUsernames = new ArrayList<PayloadUsername>();
         for (Username username : usernameService.finbByUsernameContainingIgnoreCase(search)) {
-              payloadUsernames.add(new PayloadUsername(username.getFirebaseId(), username.getUsername()));
+              payloadUsernames.add(new PayloadUsername(username.getFirebaseId(), username.getUsername(), username.getFirebaseToken()));
 
         }
         return payloadUsernames;

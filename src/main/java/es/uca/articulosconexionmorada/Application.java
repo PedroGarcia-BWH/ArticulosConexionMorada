@@ -1,5 +1,9 @@
 package es.uca.articulosconexionmorada;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import es.uca.articulosconexionmorada.article.Article;
 import es.uca.articulosconexionmorada.article.ArticleService;
 import es.uca.articulosconexionmorada.indexador.Indexador;
@@ -8,7 +12,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.Date;
 
 @EntityScan(basePackages = {"es.uca.articulosconexionmorada"})
@@ -20,6 +27,20 @@ public class Application implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+	}
+
+	@Bean
+	FirebaseMessaging firebaseMessaging() throws IOException {
+		GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
+				new ClassPathResource("conexion-morada-firebase-adminsdk-yfw4e-42a173e4d3.json").getInputStream());
+
+		FirebaseOptions firebaseOptions = FirebaseOptions.builder()
+				.setCredentials(googleCredentials)
+				.build();
+
+		FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions);
+
+		return FirebaseMessaging.getInstance(app);
 	}
 
 	//run

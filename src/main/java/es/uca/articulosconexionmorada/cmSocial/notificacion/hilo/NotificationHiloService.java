@@ -1,5 +1,7 @@
 package es.uca.articulosconexionmorada.cmSocial.notificacion.hilo;
 
+import es.uca.articulosconexionmorada.cmSocial.notificacion.firebase.NotificationMessage;
+import es.uca.articulosconexionmorada.cmSocial.notificacion.firebase.NotificationMessageService;
 import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,17 @@ public class NotificationHiloService {
     @Autowired
     private NotificationHiloRepository notificationHiloRepository;
 
+    @Autowired
+    private NotificationMessageService notificationMessageService;
+
     public void save(NotificacionHilo notificacionHilo){
         notificationHiloRepository.save(notificacionHilo);
+    }
+
+    public void saveAndSendNotification(NotificacionHilo notificacionHilo){
+        notificationHiloRepository.save(notificacionHilo);
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessageService.sendNotificationByToken(notificationMessage);
     }
 
     public void delete(NotificacionHilo notificacionHilo){
