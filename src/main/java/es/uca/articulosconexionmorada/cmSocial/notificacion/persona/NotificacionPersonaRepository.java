@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface NotificacionPersonaRepository extends JpaRepository<NotificacionPersona, UUID> {
 
-    List<NotificacionPersona> findByUserNotificadoAndDateEliminationIsNullOrderByDateCreation(Username user);
+    List<NotificacionPersona> findByUserAndDateEliminationIsNullOrderByDateCreation(Username user);
 
 
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface NotificationHiloRepository extends JpaRepository<NotificacionHilo, UUID> {
 
-    List<NotificacionHilo> findByUserAndDateEliminationIsNullOrderByDateCreation(Username user);
+    List<NotificacionHilo> findByUserNotificadorAndDateEliminationIsNullOrderByDateCreation(Username userNotificado);
 
     Optional<NotificacionHilo> findById(UUID id);
 

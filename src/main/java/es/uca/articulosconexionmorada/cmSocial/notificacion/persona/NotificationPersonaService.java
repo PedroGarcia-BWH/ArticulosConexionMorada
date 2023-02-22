@@ -25,11 +25,11 @@ public class NotificationPersonaService {
     }
 
     public List<NotificacionPersona> findByUserNotificadoAndDateEliminationIsNullOrderByDateCreation(Username user){
-        return notificacionPersonaRepository.findByUserNotificadoAndDateEliminationIsNullOrderByDateCreation(user);
+        return notificacionPersonaRepository.findByUserAndDateEliminationIsNullOrderByDateCreation(user);
     }
 
     public void deleteAllByUser(Username username){
-        List<NotificacionPersona> notificacionPersonas = notificacionPersonaRepository.findByUserNotificadoAndDateEliminationIsNullOrderByDateCreation(username);
+        List<NotificacionPersona> notificacionPersonas = notificacionPersonaRepository.findByUserAndDateEliminationIsNullOrderByDateCreation(username);
         for(NotificacionPersona notificacionPersona : notificacionPersonas){
             delete(notificacionPersona);
         }

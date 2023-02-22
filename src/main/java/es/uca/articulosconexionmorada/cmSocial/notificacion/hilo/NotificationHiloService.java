@@ -36,7 +36,7 @@ public class NotificationHiloService {
     }
 
     public List<NotificacionHilo> findByUserAndDateEliminationIsNullOrderByDateCreation(Username user){
-        return notificationHiloRepository.findByUserAndDateEliminationIsNullOrderByDateCreation(user);
+        return notificationHiloRepository.findByUserNotificadorAndDateEliminationIsNullOrderByDateCreation(user);
     }
 
     public Optional<NotificacionHilo> findById(UUID id){
@@ -44,7 +44,7 @@ public class NotificationHiloService {
     }
 
     public void deleteAllByUser(Username username){
-        List<NotificacionHilo> notificacionHilos = notificationHiloRepository.findByUserAndDateEliminationIsNullOrderByDateCreation(username);
+        List<NotificacionHilo> notificacionHilos = notificationHiloRepository.findByUserNotificadorAndDateEliminationIsNullOrderByDateCreation(username);
         for(NotificacionHilo notificacionHilo : notificacionHilos){
             delete(notificacionHilo);
         }

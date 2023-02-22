@@ -16,7 +16,10 @@ public class NotificacionHilo {
     private UUID id;
 
     @ManyToOne
-    private Username user;
+    private Username userNotificador;
+
+    @ManyToOne
+    private Username userNotificado;
 
     @ManyToOne
     private Hilo hilo;
@@ -33,8 +36,9 @@ public class NotificacionHilo {
 
     public NotificacionHilo(){}
 
-    public NotificacionHilo(Username user, Hilo hilo, String mensaje, Date dateCreation, Date dateElimination) {
-        this.user = user;
+    public NotificacionHilo(Username userNotificador, Username userNotificado, Hilo hilo, String mensaje, Date dateCreation, Date dateElimination) {
+        this.userNotificador = userNotificador;
+        this.userNotificado = userNotificado;
         this.hilo = hilo;
         this.mensaje = mensaje;
         this.dateCreation = dateCreation;
@@ -46,8 +50,12 @@ public class NotificacionHilo {
         return id;
     }
 
-    public Username getUser() {
-        return user;
+    public Username getUserNotificador() {
+        return userNotificador;
+    }
+
+    public Username getUserNotificado() {
+        return userNotificado;
     }
 
     public Hilo getHilo() {
@@ -71,8 +79,12 @@ public class NotificacionHilo {
         this.id = id;
     }
 
-    public void setUser(Username user) {
-        this.user = user;
+    public void setUserNotificador(Username userNotificador) {
+        this.userNotificador = userNotificador;
+    }
+
+    public void setUserNotificado(Username userNotificado) {
+        this.userNotificado = userNotificado;
     }
 
     public void setHilo(Hilo hilo) {

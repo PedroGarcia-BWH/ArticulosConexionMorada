@@ -114,7 +114,8 @@ public class cmSocialController {
         if(payloadHilo.getHiloPadreUuid() != null) {
             Optional<Hilo> hiloPadre = hiloService.findById(UUID.fromString(payloadHilo.getHiloPadreUuid()));
             if (hiloPadre.isPresent()) {
-                NotificacionHilo notificacionHilo = new NotificacionHilo(hiloPadre.get().getAutor(), hiloPadre.get(), "te ha respondido en un hilo", new Date(), null);
+                NotificacionHilo notificacionHilo = new NotificacionHilo(hiloPadre.get().getAutor(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()),
+                        hiloPadre.get(), "te ha respondido en un hilo", new Date(), null);
                 notificacionHiloService.save(notificacionHilo);
             }
         }
@@ -183,7 +184,8 @@ public class cmSocialController {
         if(!likeService.likeExists(like.getHilo(), like.getUserApp())){
             likeService.save(like);
 
-            NotificacionHilo notificacionHilo = new NotificacionHilo(like.getHilo().getAutor(), like.getHilo(), "le gusta tu hilo", new Date(), null);
+            NotificacionHilo notificacionHilo = new NotificacionHilo(like.getHilo().getAutor(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()),
+                    like.getHilo(), "le gusta tu hilo", new Date(), null);
             notificacionHiloService.save(notificacionHilo);
         }
 
@@ -196,7 +198,8 @@ public class cmSocialController {
         if(!dislikeService.dislikeExists(disLike.getHilo(), disLike.getUserApp())){
             dislikeService.save(disLike);
 
-            NotificacionHilo notificacionHilo = new NotificacionHilo(disLike.getHilo().getAutor(), disLike.getHilo(), "no le gusta tu hilo", new Date(), null);
+            NotificacionHilo notificacionHilo = new NotificacionHilo(disLike.getHilo().getAutor(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()),
+                    disLike.getHilo(), "no le gusta tu hilo", new Date(), null);
             notificacionHiloService.save(notificacionHilo);
         }
     }
