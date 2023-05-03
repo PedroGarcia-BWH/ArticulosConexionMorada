@@ -24,11 +24,11 @@ public class PayloadReporte {
 
     //getters
 
-    public String getReportado_uuid() {
+    public String getReportadoUuid() {
         return reportadoUuid;
     }
 
-    public String getReportador_uuid() {
+    public String getReportadorUuid() {
         return reportadorUuid;
     }
 
@@ -40,17 +40,17 @@ public class PayloadReporte {
         return descripcion;
     }
 
-    public String getMensaje_uuid() {
+    public String getMensajeUuid() {
         return mensajeUuid;
     }
 
     //setters
 
-    public void setReportado_uuid(String reportado_uuid) {
+    public void setReportadoUuid(String reportado_uuid) {
         this.reportadoUuid = reportado_uuid;
     }
 
-    public void setReportador_uuid(String reportador_uuid) {
+    public void setReportadorUuid(String reportador_uuid) {
         this.reportadorUuid = reportador_uuid;
     }
 
@@ -62,7 +62,7 @@ public class PayloadReporte {
         this.descripcion = descripcion;
     }
 
-    public void setMensaje_uuid(String mensaje_uuid) {
+    public void setMensajeUuid(String mensaje_uuid) {
         this.mensajeUuid = mensaje_uuid;
     }
 }

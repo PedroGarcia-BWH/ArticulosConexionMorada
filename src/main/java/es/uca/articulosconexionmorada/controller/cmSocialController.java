@@ -321,10 +321,11 @@ public class cmSocialController {
 
     @PostMapping("/reporte")
     public boolean addReporte(@RequestBody PayloadReporte payloadReporte){
-        if (! reporteService.reporteExists(payloadReporte.getReportado_uuid(), payloadReporte.getReportador_uuid(), payloadReporte.getMensaje_uuid())) return false;
+        System.out.println("REPORTADO: " + payloadReporte.getReportadoUuid());
+        if (reporteService.reporteExists(payloadReporte.getReportadoUuid(), payloadReporte.getReportadorUuid(), payloadReporte.getMensajeUuid())) return false;
 
-        Reporte reporte = new Reporte(payloadReporte.getReportado_uuid(), payloadReporte.getReportador_uuid(), payloadReporte.getMotivo(),
-                payloadReporte.getDescripcion(), payloadReporte.getMensaje_uuid());
+        Reporte reporte = new Reporte(payloadReporte.getReportadoUuid(), payloadReporte.getReportadorUuid(), payloadReporte.getMotivo(),
+                payloadReporte.getDescripcion(), payloadReporte.getMensajeUuid());
         reporteService.save(reporte);
         return true;
     }
