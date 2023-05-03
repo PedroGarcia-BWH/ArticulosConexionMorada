@@ -10,9 +10,12 @@ import es.uca.articulosconexionmorada.cmSocial.notificacion.hilo.NotificacionHil
 import es.uca.articulosconexionmorada.cmSocial.notificacion.hilo.NotificationHiloService;
 import es.uca.articulosconexionmorada.cmSocial.notificacion.persona.NotificacionPersona;
 import es.uca.articulosconexionmorada.cmSocial.notificacion.persona.NotificationPersonaService;
+import es.uca.articulosconexionmorada.cmSocial.reporte.Reporte;
+import es.uca.articulosconexionmorada.cmSocial.reporte.ReporteService;
 import es.uca.articulosconexionmorada.cmSocial.seguidores.Seguidores;
 import es.uca.articulosconexionmorada.cmSocial.seguidores.SeguidoresService;;
 import es.uca.articulosconexionmorada.controller.payload.PayloadHilo;
+import es.uca.articulosconexionmorada.controller.payload.PayloadReporte;
 import es.uca.articulosconexionmorada.controller.payload.PayloadSeguidores;
 import es.uca.articulosconexionmorada.controller.payload.PayloadUsername;
 import es.uca.articulosconexionmorada.username.Username;
@@ -48,6 +51,9 @@ public class cmSocialController {
 
     @Autowired
     private NotificationPersonaService notificacionPersonaService;
+
+    @Autowired
+    private ReporteService reporteService;
 
     @GetMapping("/get/lastHilos/{uuid}")
     public List<PayloadHilo> getlastHilos(@PathVariable String uuid){
@@ -310,5 +316,16 @@ public class cmSocialController {
 
         }
         return payloadHilos;
+    }
+
+
+    @PostMapping("/reporte")
+    public boolean addReporte(@RequestBody PayloadReporte payloadReporte){
+        if (! reporteService.reporteExists(payloadReporte.getReportado_uuid(), payloadReporte.getReportador_uuid(), payloadReporte.getMensaje_uuid())) return false;
+
+        Reporte reporte = new Reporte(payloadReporte.getReportado_uuid(), payloadReporte.getReportador_uuid(), payloadReporte.getMotivo(),
+                payloadReporte.getDescripcion(), payloadReporte.getMensaje_uuid());
+        reporteService.save(reporte);
+        return true;
     }
 }
