@@ -3,6 +3,8 @@ package es.uca.articulosconexionmorada.sistemaCompanero.mensaje;
 import es.uca.articulosconexionmorada.sistemaCompanero.chat.Chat;
 
 import javax.persistence.*;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -19,17 +21,21 @@ public class Mensaje {
 
     private String uuidEmisor;
 
-    private String dateCreated;
+    private Date dateCreated;
 
     private String dateEliminated;
 
+    private Boolean leido;
+
     public Mensaje(){}
 
-    public Mensaje(Chat chat, String mensaje, String uuidEmisor, String dateCreated) {
+    public Mensaje(Chat chat, String mensaje, String uuidEmisor, Date dateCreated) {
         this.chat = chat;
         this.mensaje = mensaje;
         this.uuidEmisor = uuidEmisor;
         this.dateCreated = dateCreated;
+        this.dateEliminated = null;
+        this.leido = false;
     }
 
     public UUID getId() {
@@ -48,7 +54,7 @@ public class Mensaje {
         return uuidEmisor;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
@@ -68,7 +74,7 @@ public class Mensaje {
         this.uuidEmisor = uuidEmisor;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -78,6 +84,14 @@ public class Mensaje {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Boolean getLeido() {
+    	return leido;
+    }
+
+    public void setLeido(Boolean leido) {
+    	this.leido = leido;
     }
 
 }

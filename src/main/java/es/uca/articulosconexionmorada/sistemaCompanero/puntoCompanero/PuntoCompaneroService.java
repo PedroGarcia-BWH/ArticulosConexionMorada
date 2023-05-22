@@ -4,10 +4,7 @@ import es.uca.articulosconexionmorada.controller.payload.PayloadPuntoCompanero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PuntoCompaneroService {
@@ -20,7 +17,7 @@ public class PuntoCompaneroService {
         List<PayloadPuntoCompanero> payloadPuntoCompaneros = new ArrayList<>();
         for (PuntoCompanero punto : puntos) {
             //comprobar que una fecha no sea anterior a la actual
-            if (punto.getDateEvento().after(new Date())) {
+            if (punto.getDateEvento().before(new Date())) {
                 delete(punto);
             }else{
                 //si no es anterior a la actual, se añade a la lista
@@ -51,6 +48,14 @@ public class PuntoCompaneroService {
 
     public void save(PuntoCompanero puntoCompanero) {
         puntoCompaneroRepository.save(puntoCompanero);
+    }
+
+    public Optional<PuntoCompanero> findById(String id) {
+        return puntoCompaneroRepository.findById(UUID.fromString(id));
+    }
+
+    public List<PuntoCompanero> findByUuid(String uuid) {
+        return puntoCompaneroRepository.findByUuidSolicitanteOrUuidAceptante(uuid,uuid);
     }
 
 }

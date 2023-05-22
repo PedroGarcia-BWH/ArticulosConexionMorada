@@ -11,4 +11,6 @@ public interface PuntoCompaneroRepository extends JpaRepository<PuntoCompanero, 
 
     List<PuntoCompanero> findByDateEliminatedIsNullAndUuidAceptanteIsNull();
 
+    List<PuntoCompanero> findByUuidSolicitanteOrUuidAceptante(String uuidSolicitante, String uuidAceptante);
+
 }
