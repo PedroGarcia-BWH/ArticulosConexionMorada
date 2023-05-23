@@ -41,4 +41,12 @@ public class ArticleService {
         return false;
     }
 
+    public List<Article> findByCityAndAndEliminationDateIsNull(String city) {
+        return articleRepository.findByCityAndAndEliminationDateIsNull(city);
+    }
+
+    public List<Article> findByComunidadAndAndEliminationDateIsNull(String comunidad) {
+        return articleRepository.findByComunidadAndAndEliminationDateIsNull(comunidad);
+    }
+
 }

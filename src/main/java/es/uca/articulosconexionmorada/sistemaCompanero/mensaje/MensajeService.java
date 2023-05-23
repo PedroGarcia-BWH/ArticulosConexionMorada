@@ -5,9 +5,13 @@ import es.uca.articulosconexionmorada.controller.payload.PayloadMensaje;
 import es.uca.articulosconexionmorada.firebase.CloudMessage;
 import es.uca.articulosconexionmorada.firebase.NotificationData;
 import es.uca.articulosconexionmorada.sistemaCompanero.chat.Chat;
+import es.uca.articulosconexionmorada.sistemaCompanero.chat.ChatService;
+import es.uca.articulosconexionmorada.username.Username;
+import es.uca.articulosconexionmorada.username.UsernameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +22,14 @@ public class MensajeService {
     @Autowired
     private MensajeRepository mensajeRepository;
 
+    @Autowired
+    private UsernameService usernameService;
+
     public MensajeService() {}
 
-    public MensajeService(MensajeRepository mensajeRepository) {
+    public MensajeService(MensajeRepository mensajeRepository, UsernameService usernameService) {
         this.mensajeRepository = mensajeRepository;
+        this.usernameService = usernameService;
     }
 
     public Mensaje getLastMensajeByChat(Chat chat) {
@@ -57,13 +65,20 @@ public class MensajeService {
         return mensajesUser;
     }
 
-    public void save(Mensaje mensaje) {
+    public void save(Mensaje mensaje) throws IOException {
         if(mensaje.getId() == null) {
             NotificationData notificationData = new NotificationData();
             notificationData.setTitle("Sistema Compañero");
-            notificationData.setBody(mensaje.getUuidEmisor() + " te ha enviado un mensaje");
-            //notificationData.setRecipientToken(notificacionPersona.getUserNotificado().getFirebaseToken());
-            //CloudMessage.sendNotification(notificationData);
+
+            String uuidNotificado = mensaje.getChat().getUuidUser2();
+
+            if(!mensaje.getChat().getUuidUser1().equals(mensaje.getUuidEmisor())){
+                uuidNotificado = mensaje.getChat().getUuidUser1();
+            }
+            Username username = usernameService.findByFirebaseId(uuidNotificado);
+            notificationData.setRecipientToken(username.getFirebaseToken());
+            notificationData.setBody(username.getUsername() + " " + mensaje.getMensaje() );
+            CloudMessage.sendNotification(notificationData);
         }
         mensajeRepository.save(mensaje);
     }

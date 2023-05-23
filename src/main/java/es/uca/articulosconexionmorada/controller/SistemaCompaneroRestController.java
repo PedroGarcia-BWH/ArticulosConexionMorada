@@ -14,6 +14,7 @@ import es.uca.articulosconexionmorada.sistemaCompanero.puntoCompanero.PuntoCompa
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -70,7 +71,7 @@ public class SistemaCompaneroRestController {
     }
 
     @PutMapping("/puntoCompanero/accept/{id}/{uuid}")
-    public Boolean puntoCompaneroAccept(@PathVariable String id, @PathVariable String uuid) {
+    public Boolean puntoCompaneroAccept(@PathVariable String id, @PathVariable String uuid) throws IOException {
         Optional<PuntoCompanero> puntoCompanero = puntoCompaneroService.findById(id);
         if (puntoCompanero.isPresent()) {
             if(puntoCompanero.get().getUuidAceptante() == null && puntoCompanero.get().getDateEliminated() == null) {
@@ -184,7 +185,7 @@ public class SistemaCompaneroRestController {
     }
 
     @PutMapping("/check/mensajes/chat/{id}/user/{uuid}")
-    public void checkMensajesChat(@PathVariable String id, @PathVariable String uuid) {
+    public void checkMensajesChat(@PathVariable String id, @PathVariable String uuid) throws IOException {
         List<Mensaje> mensajes = mensajeService.getMensajesNoLeidosByChat(chatService.findById(UUID.fromString(id)).get(), uuid);
         System.out.println(mensajes.size());
         for (Mensaje mensaje : mensajes) {
@@ -196,7 +197,7 @@ public class SistemaCompaneroRestController {
     }
 
     @PostMapping("/mensaje")
-    public boolean mensaje(@RequestBody PayloadMensaje payloadMensaje) {
+    public boolean mensaje(@RequestBody PayloadMensaje payloadMensaje) throws IOException {
         Optional<Chat> chat = chatService.findById(UUID.fromString(payloadMensaje.getId()));
         if (chat.isPresent()) {
             Mensaje mensaje = new Mensaje(chat.get(), payloadMensaje.getMensaje(), payloadMensaje.getUuidEmisor(), new Date());

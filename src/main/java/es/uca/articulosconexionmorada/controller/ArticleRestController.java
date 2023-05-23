@@ -25,10 +25,16 @@ public class ArticleRestController {
         for(int i=0; i<3; i++) emptyPreferences.add("");
 
         System.out.println(new Date() + "--LastArticles recibido (preferences): " + payloadArticle.getPreferences());
-
+        List<Article> articles = new ArrayList<>();
         int i = 0;
+        if(!payloadArticle.getPreferences().get(3).equals("")){
+             articles = articleService.findByCityAndAndEliminationDateIsNull(payloadArticle.getPreferences().get(3));
+        }else if(!payloadArticle.getPreferences().get(4).equals("")){
+             articles = articleService.findByComunidadAndAndEliminationDateIsNull(payloadArticle.getPreferences().get(4));
+        }else{
+             articles = articleService.findByEliminationDateIsNull();
+        }
         if(payloadArticle.getNumberArticles() > 0){
-            List<Article> articles = articleService.findByEliminationDateIsNull();
             if(articles.size() > 0){
                 if(!equals(payloadArticle.getPreferences(), emptyPreferences)){
 

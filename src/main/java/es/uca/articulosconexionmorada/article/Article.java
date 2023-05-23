@@ -37,6 +37,12 @@ public class Article {
     @Column
     private String Category;
 
+    @Column
+    private String city;
+
+    @Column
+    private String comunidad;
+
     public Article(){}
 
     public Article(String title, String description, String body, String urlFrontPage) {
@@ -45,6 +51,18 @@ public class Article {
         this.body = body;
         this.urlFrontPage = urlFrontPage;
         this.creationDate = new Date();
+        city = null;
+        comunidad = null;
+    }
+
+    public Article(String title, String description, String body, String urlFrontPage,String city, String comunidad) {
+        this.title = title;
+        this.description = description;
+        this.body = body;
+        this.urlFrontPage = urlFrontPage;
+        this.creationDate = new Date();
+        this.city = city;
+        this.comunidad = comunidad;
     }
 
     //getters
@@ -98,6 +116,22 @@ public class Article {
 
     public void setCategory(String category) {
         Category = category;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getComunidad() {
+        return comunidad;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setComunidad(String comunidad) {
+        this.comunidad = comunidad;
     }
 
     @Override
