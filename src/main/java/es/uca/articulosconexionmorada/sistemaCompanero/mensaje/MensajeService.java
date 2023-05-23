@@ -2,10 +2,13 @@ package es.uca.articulosconexionmorada.sistemaCompanero.mensaje;
 
 
 import es.uca.articulosconexionmorada.controller.payload.PayloadMensaje;
+import es.uca.articulosconexionmorada.firebase.CloudMessage;
+import es.uca.articulosconexionmorada.firebase.NotificationData;
 import es.uca.articulosconexionmorada.sistemaCompanero.chat.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +31,40 @@ public class MensajeService {
     }
 
     public int getNumMensajesNoLeidosByChat(Chat chat, String uuid) {
-        return mensajeRepository.findByChatAndUuidEmisorAndLeidoIsFalse(chat, uuid).size();
+        List<Mensaje> mensajes = mensajeRepository.findMensajeByChatAndLeidoIsFalse(chat);
+        List<Mensaje> mensajesUser = new ArrayList<>();
+
+        for (Mensaje mensaje : mensajes) {
+            if(mensaje.getUuidEmisor() != null) {
+                if (!mensaje.getUuidEmisor().equals(uuid)) {
+                    mensajesUser.add(mensaje);
+                }
+            }
+
+        }
+        return mensajesUser.size();
     }
 
     public List<Mensaje> getMensajesNoLeidosByChat(Chat chat, String uuid) {
-        return mensajeRepository.findByChatAndUuidEmisorAndLeidoIsFalse(chat, uuid);
+        List<Mensaje> mensajes = mensajeRepository.findMensajeByChatAndLeidoIsFalse(chat);
+        List<Mensaje> mensajesUser = new ArrayList<>();
+
+        for (Mensaje mensaje : mensajes) {
+            if (!mensaje.getUuidEmisor().equals(uuid)) {
+                mensajesUser.add(mensaje);
+            }
+        }
+        return mensajesUser;
     }
 
     public void save(Mensaje mensaje) {
+        if(mensaje.getId() == null) {
+            NotificationData notificationData = new NotificationData();
+            notificationData.setTitle("Sistema Compañero");
+            notificationData.setBody(mensaje.getUuidEmisor() + " te ha enviado un mensaje");
+            //notificationData.setRecipientToken(notificacionPersona.getUserNotificado().getFirebaseToken());
+            //CloudMessage.sendNotification(notificationData);
+        }
         mensajeRepository.save(mensaje);
     }
 

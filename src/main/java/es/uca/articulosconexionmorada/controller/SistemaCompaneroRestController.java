@@ -188,7 +188,7 @@ public class SistemaCompaneroRestController {
         List<Mensaje> mensajes = mensajeService.getMensajesNoLeidosByChat(chatService.findById(UUID.fromString(id)).get(), uuid);
         System.out.println(mensajes.size());
         for (Mensaje mensaje : mensajes) {
-            if(mensaje.getUuidEmisor().equals(id)) {
+            if(!mensaje.getUuidEmisor().equals(id)) {
                 mensaje.setLeido(true);
                 mensajeService.save(mensaje);
             }

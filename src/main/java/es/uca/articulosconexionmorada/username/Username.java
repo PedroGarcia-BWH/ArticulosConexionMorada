@@ -17,11 +17,11 @@ public class Username {
     @NotNull
     private String username;
 
-    @Column(unique=true)
+
     @NotNull
     private String firebaseId;
 
-    @Column(unique=true)
+
     @NotNull
     private String firebaseToken;
 

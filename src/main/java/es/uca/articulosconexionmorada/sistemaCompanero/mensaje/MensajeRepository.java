@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface MensajeRepository extends JpaRepository<Mensaje, UUID> {
     List<Mensaje> findByChatOrderByDateCreatedDesc(Chat chat);
 
-    List<Mensaje> findByChatAndUuidEmisorAndLeidoIsFalse(Chat chat, String uuidEmisor);
+    List<Mensaje> findMensajeByChatAndLeidoIsFalse(Chat chat);
 
     List<Mensaje> findByChatOrderByDateCreated(Chat chat);
 }

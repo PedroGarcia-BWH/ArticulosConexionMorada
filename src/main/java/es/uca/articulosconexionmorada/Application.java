@@ -6,7 +6,10 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import es.uca.articulosconexionmorada.article.Article;
 import es.uca.articulosconexionmorada.article.ArticleService;
+import es.uca.articulosconexionmorada.firebase.CloudMessage;
+import es.uca.articulosconexionmorada.firebase.NotificationData;
 import es.uca.articulosconexionmorada.indexador.Indexador;
+import es.uca.articulosconexionmorada.sistemaCompanero.mensaje.MensajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,27 +32,19 @@ public class Application implements CommandLineRunner {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean
-	FirebaseMessaging firebaseMessaging() throws IOException {
-		GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
-				new ClassPathResource("conexion-morada-firebase-adminsdk-yfw4e-42a173e4d3.json").getInputStream());
 
-		FirebaseOptions firebaseOptions = FirebaseOptions.builder()
-				.setCredentials(googleCredentials)
-				.build();
-
-		FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions);
-
-		return FirebaseMessaging.getInstance(app);
-	}
-
-	//run
 
 	@Override
 	public void run(String... args) throws Exception {
 		Indexador indexador = new Indexador(articleService);
 		indexador.index();
 		System.out.println(new Date() + "--Indexado realizado");
+
+		NotificationData notificationData = new NotificationData();
+		notificationData.setBody("Cuerpo de la notificación");
+		notificationData.setTitle("Título de la notificación");
+		notificationData.setRecipientToken("f2Dkam4_QCKb1A1MZ9F0Aj:APA91bGaQjEblKFWZfgPciSUXmqp7VPPSpoPZGVTejXXT6w2vgCc78hsOCTMLLW3fo-6XDhS9czwEKYajlMIsQTSsKSANE1a2b_al-_9YXP9J4FlR2dcQtb1HspYEOvZoK2hIPNCffFz");
+		//CloudMessage.sendNotification(notificationData);
 		/*articleService.save(new Article("La violencia sexual en España: un problema que aún no se erradica", "La violencia sexual es una forma de violencia que afecta a millones de mujeres en España. En este artículo se analizan las causas y las consecuencias de la violencia sexual en España, y se proponen medidas para prevenir y combatir este flagelo.",
 				"La violencia sexual es una forma de violencia que afecta a millones de mujeres en España. Según datos del Instituto de la Mujer, en España una de cada tres mujeres ha sufrido algún tipo de violencia sexual en su vida. Además, el número de denuncias por violación y agresiones sexuales ha aumentado en los últimos años, a pesar de las campañas de sensibilización y las medidas de prevención y protección.\n" +
 						"\n" +

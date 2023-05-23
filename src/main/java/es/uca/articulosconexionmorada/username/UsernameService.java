@@ -25,6 +25,10 @@ public class UsernameService {
         usernameRepository.delete(username);
     }
 
+    public Username findByUuid(String uuid) {
+        return usernameRepository.findByFirebaseId(uuid);
+    }
+
     public List<Username> finbByUsernameContainingIgnoreCase(String username) {
         return usernameRepository.findByUsernameContainingIgnoreCase(username);
     }

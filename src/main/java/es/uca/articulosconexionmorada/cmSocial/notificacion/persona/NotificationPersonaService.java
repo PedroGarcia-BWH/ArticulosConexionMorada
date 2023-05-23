@@ -1,9 +1,12 @@
 package es.uca.articulosconexionmorada.cmSocial.notificacion.persona;
 
+import es.uca.articulosconexionmorada.firebase.CloudMessage;
+import es.uca.articulosconexionmorada.firebase.NotificationData;
 import es.uca.articulosconexionmorada.username.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +18,15 @@ public class NotificationPersonaService {
     @Autowired
     private NotificacionPersonaRepository notificacionPersonaRepository;
 
-    public void save(NotificacionPersona notificacionPersona){
+    public void save(NotificacionPersona notificacionPersona) throws IOException {
+        if(notificacionPersona.getId() == null){
+            NotificationData notificationData = new NotificationData();
+            notificationData.setTitle("Conexión Morada Social");
+            notificationData.setBody(notificacionPersona.getUserNotificado().getUsername() + notificacionPersona.getMensaje());
+            notificationData.setRecipientToken(notificacionPersona.getUserNotificado().getFirebaseToken());
+            CloudMessage.sendNotification(notificationData);
+        }
+
         notificacionPersonaRepository.save(notificacionPersona);
     }
 

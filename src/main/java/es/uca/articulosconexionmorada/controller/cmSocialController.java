@@ -24,6 +24,7 @@ import es.uca.articulosconexionmorada.username.UsernameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -116,7 +117,7 @@ public class cmSocialController {
     }
 
     @PostMapping("/add/hilo")
-    public void addHilo(@RequestBody PayloadHilo payloadHilo){
+    public void addHilo(@RequestBody PayloadHilo payloadHilo) throws IOException {
         if(payloadHilo.getHiloPadreUuid() != null) {
             Optional<Hilo> hiloPadre = hiloService.findById(UUID.fromString(payloadHilo.getHiloPadreUuid()));
             if (hiloPadre.isPresent()) {
@@ -157,7 +158,7 @@ public class cmSocialController {
 
 
     @PostMapping("/add/Seguidor")
-    public void addSeguidor(@RequestBody PayloadSeguidores payloadSeguidores){
+    public void addSeguidor(@RequestBody PayloadSeguidores payloadSeguidores) throws IOException {
         System.out.println("Seguidor: ");
         Username seguidor = usernameService.findByFirebaseId(payloadSeguidores.seguidorUuid);
         Username seguido = usernameService.findByFirebaseId(payloadSeguidores.seguidoUuid);
@@ -184,7 +185,7 @@ public class cmSocialController {
 
 
     @PostMapping("/add/like")
-    public void addLike(@RequestBody PayloadHilo payloadHilo){
+    public void addLike(@RequestBody PayloadHilo payloadHilo) throws IOException {
         Like like = new Like(hiloService.findById(UUID.fromString(payloadHilo.getIdHilo())).get(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()));
 
         if(!likeService.likeExists(like.getHilo(), like.getUserApp())){
@@ -198,7 +199,7 @@ public class cmSocialController {
     }
 
     @PostMapping("/add/dislike")
-    public void addDislike(@RequestBody PayloadHilo payloadHilo){
+    public void addDislike(@RequestBody PayloadHilo payloadHilo) throws IOException {
         Dislike disLike = new Dislike(hiloService.findById(UUID.fromString(payloadHilo.getIdHilo())).get(), usernameService.findByFirebaseId(payloadHilo.getAutorUuid()));
 
         if(!dislikeService.dislikeExists(disLike.getHilo(), disLike.getUserApp())){

@@ -38,4 +38,15 @@ public class UsernameRestController {
         }
         return false;
     }
+
+    @PutMapping("/update/token")
+    public boolean updateToken(@RequestBody PayloadUsername payloadUsername) {
+        Username username = usernameService.findByFirebaseId(payloadUsername.uuid);
+        if(username != null) {
+            username.setFirebaseToken(payloadUsername.token);
+            usernameService.save(username);
+            System.out.println("token updated");
+        }
+        return false;
+    }
 }
