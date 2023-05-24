@@ -8,7 +8,6 @@ import es.uca.articulosconexionmorada.article.Article;
 import es.uca.articulosconexionmorada.article.ArticleService;
 import es.uca.articulosconexionmorada.firebase.CloudMessage;
 import es.uca.articulosconexionmorada.firebase.NotificationData;
-import es.uca.articulosconexionmorada.indexador.Indexador;
 import es.uca.articulosconexionmorada.sistemaCompanero.mensaje.MensajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -36,9 +35,6 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Indexador indexador = new Indexador(articleService);
-		indexador.index();
-		System.out.println(new Date() + "--Indexado realizado");
 
 		NotificationData notificationData = new NotificationData();
 		notificationData.setBody("Cuerpo de la notificación");

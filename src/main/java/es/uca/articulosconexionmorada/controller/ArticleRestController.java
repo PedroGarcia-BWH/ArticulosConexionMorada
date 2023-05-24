@@ -2,7 +2,6 @@ package es.uca.articulosconexionmorada.controller;
 
 import es.uca.articulosconexionmorada.article.Article;
 import es.uca.articulosconexionmorada.article.ArticleService;
-import es.uca.articulosconexionmorada.consulta.Consulta;
 import es.uca.articulosconexionmorada.controller.payload.PayloadArticle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,12 +53,24 @@ public class ArticleRestController {
         return lastArticles;
     }
 
-    @GetMapping("/query/{query}/{numberArticles}")
-    List<Article> query(@PathVariable String query, @PathVariable int numberArticles) throws IOException, URISyntaxException, InterruptedException {
+    /*@GetMapping("/query/{query}/{numberArticles}/{comunidad}/{city}")
+    List<Article> query(@PathVariable String query, @PathVariable int numberArticles, @PathVariable String comunidad, @PathVariable String city) throws IOException, URISyntaxException, InterruptedException {
         Consulta consulta = new Consulta(articleService, numberArticles);
         System.out.println(new Date() + "--Consulta recibida: " + query);
         ///System.out.println(consulta.Consulta(query));
         return consulta.Consulta(query);
+    }*/
+
+    @GetMapping("/query/{query}/{numberArticles}/{comunidad}/{city}")
+    List<Article> query(@PathVariable String query, @PathVariable int numberArticles, @PathVariable String comunidad, @PathVariable String city) throws IOException, URISyntaxException, InterruptedException {
+        if(!comunidad.equals("null")){
+            return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(query, comunidad);
+        }else if (!city.equals("null")){
+            return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(query, city);
+        }else{
+            System.out.println(articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query).size());
+            return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query);
+        }
     }
 
     private boolean equals(List<String> list1, List<String> list2){

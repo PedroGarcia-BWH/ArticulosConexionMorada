@@ -49,4 +49,16 @@ public class ArticleService {
         return articleRepository.findByComunidadAndAndEliminationDateIsNull(comunidad);
     }
 
+    public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(String query) {
+        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query, query, query);
+    }
+
+    public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(String query, String comunidad) {
+        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(query, query, query, comunidad);
+    }
+
+    public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(String query, String city) {
+        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(query, query, query, city);
+    }
+
 }
