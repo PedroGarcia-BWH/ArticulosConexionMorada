@@ -20,7 +20,7 @@ public class ArticleService {
     }
 
     public List<Article> findByEliminationDateIsNull() {
-        return articleRepository.findByeliminationDateIsNull();
+        return articleRepository.findByCityIsNullAndComunidadIsNullAndEliminationDateIsNull();
     }
 
     public Article save(Article article) {

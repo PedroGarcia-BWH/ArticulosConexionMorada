@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface ArticleRespository extends JpaRepository<Article, UUID> {
-    public List<Article> findByeliminationDateIsNull();
+    public List<Article> findByCityIsNullAndComunidadIsNullAndEliminationDateIsNull();
 
     public List<Article> findByCityAndAndEliminationDateIsNull(String city);
 
