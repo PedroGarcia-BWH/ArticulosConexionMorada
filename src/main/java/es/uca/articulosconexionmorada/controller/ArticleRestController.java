@@ -64,11 +64,13 @@ public class ArticleRestController {
     @GetMapping("/query/{query}/{numberArticles}/{comunidad}/{city}")
     List<Article> query(@PathVariable String query, @PathVariable int numberArticles, @PathVariable String comunidad, @PathVariable String city) throws IOException, URISyntaxException, InterruptedException {
         if(!comunidad.equals("null")){
+            System.out.println( " Comunidad: " + articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(query, comunidad).size());
             return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(query, comunidad);
         }else if (!city.equals("null")){
+            System.out.println( " City: " + city + " " + articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(query, city).size());
             return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(query, city);
         }else{
-            System.out.println(articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query).size());
+            System.out.println("Pais" + articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query).size());
             return articleService.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query);
         }
     }

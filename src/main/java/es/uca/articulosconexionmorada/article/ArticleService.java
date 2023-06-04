@@ -50,15 +50,15 @@ public class ArticleService {
     }
 
     public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(String query) {
-        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidadIsNullAndCityIsNull(query, query, query);
+        return articleRepository.findByTitleContainingAndCityIsNullAndComunidadIsNull(query);
     }
 
     public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(String query, String comunidad) {
-        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndComunidad(query, query, query, comunidad);
+        return articleRepository.findByTitleContainingAndComunidad(query, comunidad);
     }
 
     public List<Article> findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(String query, String city) {
-        return articleRepository.findByTitleContainingOrDescriptionContainingOrBodyContainingAndCity(query, query, query, city);
+        return articleRepository.findByTitleContainingAndCity(query, city);
     }
 
 }
