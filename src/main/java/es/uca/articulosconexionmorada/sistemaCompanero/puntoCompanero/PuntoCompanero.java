@@ -78,6 +78,10 @@ public class PuntoCompanero {
         return dateEvento;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public void setUuidSolicitante(String uuidSolicitante) {
         this.uuidSolicitante = uuidSolicitante;
     }

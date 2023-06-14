@@ -74,6 +74,9 @@ public class Hilo {
 
 
     //setters
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public void setAutor(Username autor) {
         this.autor = autor;

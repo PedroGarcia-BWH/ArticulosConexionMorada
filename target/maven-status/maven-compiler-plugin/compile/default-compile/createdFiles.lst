@@ -14,6 +14,7 @@ es\uca\articulosconexionmorada\cmSocial\like\LikeService.class
 es\uca\articulosconexionmorada\cmSocial\hilo\HiloRepository.class
 es\uca\articulosconexionmorada\controller\payload\PayloadUsername.class
 es\uca\articulosconexionmorada\sistemaCompanero\puntoCompanero\PuntoCompaneroService.class
+es\uca\articulosconexionmorada\controller\NotificationMessageController.class
 es\uca\articulosconexionmorada\controller\payload\PayloadSeguidores.class
 es\uca\articulosconexionmorada\cmSocial\seguidores\SeguidoresService.class
 es\uca\articulosconexionmorada\controller\cmSocialController.class

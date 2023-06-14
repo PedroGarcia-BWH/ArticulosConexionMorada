@@ -1,1 +1,6 @@
+es\uca\articulosconexionmorada\controller\ArticleRestControllerTest.class
+es\uca\articulosconexionmorada\controller\cmSocialControllerTest.class
+es\uca\articulosconexionmorada\controller\NotificationMessageControllerTest.class
 es\uca\articulosconexionmorada\ApplicationTests.class
+es\uca\articulosconexionmorada\controller\UsernameRestControllerTest.class
+es\uca\articulosconexionmorada\firebase\CloudMessageTest.class

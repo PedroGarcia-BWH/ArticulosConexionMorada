@@ -13,4 +13,31 @@ public class PayloadUsername {
         this.username = username;
         this.token = token;
     }
+
+    public PayloadUsername() {}
+
+    //getters and setters
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

@@ -33,6 +33,7 @@ public class NotificationMessageController {
 
     @GetMapping("/get/Notifications/hilo/{uuid}")
     public List<PayloadNotificationHilo> getNotificationsHilo(@PathVariable String uuid){
+        System.out.println("getNotificationsHilo");
         List<NotificacionHilo> notificacionHilos = notificationHiloService.findByUserAndDateEliminationIsNullOrderByDateCreation(usernameService.findByFirebaseId(uuid));
 
         List<PayloadNotificationHilo> payloadNotificationHilos = new ArrayList<PayloadNotificationHilo>();
@@ -50,7 +51,6 @@ public class NotificationMessageController {
                     notificacionHilo.getMensaje(), notificacionHilo.getDateCreation().toString()));
         }
 
-        System.out.println("payloadNotificationHilos: " + payloadNotificationHilos.get(0).getUsername());
 
         return payloadNotificationHilos;
     }

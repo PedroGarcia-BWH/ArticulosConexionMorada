@@ -16,12 +16,16 @@ import java.util.List;
 public class ArticleRestController {
     @Autowired
     private ArticleService articleService;
+
+    public ArticleRestController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
     @PostMapping("/lastArticles")
     public List<Article> lastArticles(@RequestBody PayloadArticle payloadArticle) {
         List<Article> lastArticles = new ArrayList<>();
         ArrayList<String> emptyPreferences = new ArrayList<>();
 
-        for(int i=0; i<3; i++) emptyPreferences.add("");
+        for(int i=0; i<5; i++) emptyPreferences.add("");
 
         System.out.println(new Date() + "--LastArticles recibido (preferences): " + payloadArticle.getPreferences());
         List<Article> articles = new ArrayList<>();
@@ -77,7 +81,7 @@ public class ArticleRestController {
 
     private boolean equals(List<String> list1, List<String> list2){
         if(list1.size() != list2.size()) return false;
-        for(int i = 0; i < list1.size(); i++){
+        for(int i = 0; i < 3; i++){
             if(!list1.get(i).equals(list2.get(i))) return false;
         }
         return true;
