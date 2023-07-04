@@ -34,7 +34,8 @@ public class SistemaCompaneroRestController {
     @Autowired
     private MensajeService mensajeService;
 
-    public SistemaCompaneroRestController(PuntoCompaneroService puntoCompaneroService, MarkerService markerService, ChatService chatService, MensajeService mensajeService) {
+    public SistemaCompaneroRestController(PuntoCompaneroService puntoCompaneroService, MarkerService markerService, ChatService chatService,
+                                          MensajeService mensajeService) {
         this.puntoCompaneroService = puntoCompaneroService;
         this.markerService = markerService;
         this.chatService = chatService;

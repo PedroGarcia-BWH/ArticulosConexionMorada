@@ -37,4 +37,8 @@ public class UsernameService {
         return usernameRepository.findByFirebaseId(firebaseId);
     }
 
+    public Optional<Username> findByToken(String token) {
+        return usernameRepository.findByFirebaseToken(token);
+    }
+
 }

@@ -15,5 +15,7 @@ public interface UsernameRepository extends JpaRepository<Username, UUID> {
     List<Username> findByUsernameContainingIgnoreCase(String username);
 
     Username findByFirebaseId(String firebaseId);
+
+    Optional<Username> findByFirebaseToken(String firebaseToken);
 }
 
